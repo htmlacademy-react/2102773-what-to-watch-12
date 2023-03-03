@@ -4,6 +4,7 @@ type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
+  cardsCount: number;
 }
 
 function App(props: AppScreenProps): JSX.Element {
@@ -12,6 +13,7 @@ function App(props: AppScreenProps): JSX.Element {
       filmCardTitle={props.filmCardTitle}
       filmCardGenre={props.filmCardGenre}
       filmCardYear={props.filmCardYear}
+      cardsCount={props.cardsCount}
     />
   );
 }

@@ -4,9 +4,16 @@ type MainScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
+  cardsCount: number;
 }
 
 function MainScreen(props: MainScreenProps): JSX.Element {
+
+  const cardsItem: JSX.Element[] = Array.from({ length: props.cardsCount }, MovieCard).map((card, index) =>
+    // eslint-disable-next-line react/no-array-index-key
+    (<article className="small-film-card catalog__films-card" key={index}>{card}</article>)
+  );
+
   return (
     <>
       <section className="film-card">
@@ -108,26 +115,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           </ul>
 
           <div className="catalog__films-list">
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
-            <MovieCard/>
+            {cardsItem}
           </div>
 
           <div className="catalog__more">
