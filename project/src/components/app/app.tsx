@@ -9,15 +9,17 @@ import MoviesList from '../../pages/movies-list-screen/movies-list-screen';
 import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
+import {Films} from '../../types/film';
 
 type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  cardsCount: number;
+  films: Films;
 }
 
 function App(props: AppScreenProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -29,7 +31,7 @@ function App(props: AppScreenProps): JSX.Element {
                 filmCardTitle={props.filmCardTitle}
                 filmCardGenre={props.filmCardGenre}
                 filmCardYear={props.filmCardYear}
-                cardsCount={props.cardsCount}
+                films={props.films}
               />
             }
           />
@@ -37,9 +39,9 @@ function App(props: AppScreenProps): JSX.Element {
             path={AppRoute.MyList}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={AuthorizationStatus.Auth}
               >
-                <MoviesList />
+                <MoviesList films={props.films} />
               </PrivateRoute>
             }
           />
