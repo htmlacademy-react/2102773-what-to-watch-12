@@ -10,12 +10,14 @@ import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
 import {Films} from '../../types/film';
+import { FilmReviews } from '../../types/review';
 
 type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
   films: Films;
+  reviews: FilmReviews[];
 }
 
 function App(props: AppScreenProps): JSX.Element {
@@ -45,14 +47,18 @@ function App(props: AppScreenProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Film}>
-            <Route index element={<MoviePage/>} />
-            <Route path={AppRoute.AddReview} element={<AddReview/>}/>
+          <Route path={AppRoute.Films}>
+            <Route path={AppRoute.Film}>
+              <Route index element={<MoviePage films={props.films} filmReviews={props.reviews}/>}/>
+
+              <Route path={AppRoute.AddReview} element={<AddReview films={props.films}/>}/>
+            </Route>
+
           </Route>
 
           <Route
             path={AppRoute.Player}
-            element={<MoviePlayer/>}
+            element={<MoviePlayer films={props.films}/>}
           />
           <Route
             path={AppRoute.SignIn}

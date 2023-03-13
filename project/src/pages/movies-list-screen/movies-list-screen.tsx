@@ -10,6 +10,8 @@ type MoviesListProps = {
 }
 
 function MoviesList(props: MoviesListProps): JSX.Element {
+  const favoriteFilms = props.films.filter((film) => film.isFavorite);
+
   return (
     <div className="user-page">
       <Helmet>
@@ -18,7 +20,7 @@ function MoviesList(props: MoviesListProps): JSX.Element {
       <header className="page-header user-page__head">
         <Logo/>
 
-        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">9</span></h1>
+        <h1 className="page-title user-page__title">My list <span className="user-page__film-count">{favoriteFilms.length}</span></h1>
 
         <Avatar/>
       </header>
@@ -27,12 +29,12 @@ function MoviesList(props: MoviesListProps): JSX.Element {
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <div className="catalog__films-list">
-          {props.films.filter((film) => film.isFavorite).map((film) => (
+          {favoriteFilms.map((film) => (
             <article className="small-film-card catalog__films-card" key={film.id}>
               <MovieCard film={film}/>
             </article>
           )
-          )};
+          )}
         </div>
       </section>
 

@@ -1,3 +1,4 @@
+import {useState, ChangeEvent} from 'react';
 import {Films} from '../../types/film';
 import MovieCard from '../movie-card/movie-card';
 
@@ -6,6 +7,8 @@ type FilmsListProps = {
 }
 
 function FilmsList(props: FilmsListProps): JSX.Element {
+  const state = useState(0)
+  console.log(state)
 
   return (
     <> {props.films.map((film) => (
