@@ -10,6 +10,7 @@ type MovieCardProps = {
 function MovieCard(props: MovieCardProps): JSX.Element {
 
   const [card, setCard] = useState(0);
+  // eslint-disable-next-line no-console
   console.log(card);
 
   return (

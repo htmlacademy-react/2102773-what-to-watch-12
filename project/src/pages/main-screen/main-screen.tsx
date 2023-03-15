@@ -13,6 +13,8 @@ type MainScreenProps = {
 
 function MainScreen(props: MainScreenProps): JSX.Element {
 
+  const favoriteFilms = props.films.filter((film) => film.isFavorite);
+
   return (
     <>
       <Helmet>
@@ -52,7 +54,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">{favoriteFilms.length}</span>
                 </button>
               </div>
             </div>

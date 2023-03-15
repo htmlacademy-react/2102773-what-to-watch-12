@@ -145,7 +145,11 @@ export const films: Film[] = [
     rating:4.4,
     scoresCount:1503092,
     director:'Wachowski Brothers',
-    starring:['Keanu Reeves','Laurence Fishburne','Carrie-Anne Moss'],
+    starring:[
+      'Keanu Reeves',
+      'Laurence Fishburne',
+      'Carrie-Anne Moss'
+    ],
     runTime:136,
     genre:'Action',
     released:1999,

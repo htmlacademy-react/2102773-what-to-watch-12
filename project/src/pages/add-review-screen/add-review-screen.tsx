@@ -49,7 +49,12 @@ function AddReview(props: AddReviewProps): JSX.Element {
           <img src={movieInfo.posterImage} alt={movieInfo.name} width="218" height="327" />
         </div>
       </div>
-      <AddReviewForm/>
+      <div className="rating">
+        <div className="add-review">
+          <AddReviewForm/>
+        </div>
+      </div>
+
     </section>
   );
 }

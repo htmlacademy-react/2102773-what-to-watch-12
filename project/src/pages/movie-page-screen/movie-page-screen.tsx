@@ -1,10 +1,13 @@
+import {useState} from 'react';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import {Films} from '../../types/film';
 import { Link, useParams } from 'react-router-dom';
-import {AppRoute} from '../../const';
+import { AppRoute, MoviePageState } from '../../const';
 import { FilmReviews } from '../../types/review';
+import FilmDetailsList from '../../components/film-details/film-details';
 import FilmReviewsList from '../../components/film-reviews/film-reviews';
+import FilmOverviewList from '../../components/film-overview/film-overview';
 
 type MoviesPageProps = {
   films: Films;
@@ -14,6 +17,20 @@ type MoviesPageProps = {
 function MoviePage(props: MoviesPageProps): JSX.Element {
   const params = useParams();
   const [movieInfo] = props.films.filter((film) => film.id === Number(params.id));
+  const favoriteFilms = props.films.filter((film) => film.isFavorite);
+
+  const [state, setState] = useState('overview');
+
+  function setPageState () {
+    switch (state) {
+      case MoviePageState.Overview:
+        return <FilmOverviewList films={props.films}/>;
+      case MoviePageState.Reviews:
+        return <FilmReviewsList filmReviews={props.filmReviews}/>;
+      case MoviePageState.Details:
+        return <FilmDetailsList films={props.films}/>;
+    }
+  }
 
   return (
     <>
@@ -47,7 +64,7 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">{favoriteFilms.length}</span>
                 </button>
                 <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
               </div>
@@ -65,35 +82,17 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
               <nav className="film-nav film-card__nav">
                 <ul className="film-nav__list">
                   <li className="film-nav__item film-nav__item--active">
-                    <a href="#" className="film-nav__link">Overview</a>
+                    <Link className="film-nav__link" onClick={() => setState(MoviePageState.Overview)} to=''>Overview</Link>
                   </li>
                   <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Details</a>
+                    <Link className="film-nav__link" onClick={() => setState(MoviePageState.Details)} to=''>Details</Link>
                   </li>
                   <li className="film-nav__item">
-                    <a href="#" className="film-nav__link">Reviews</a>
+                    <Link className="film-nav__link" onClick={() => setState(MoviePageState.Reviews)} to=''>Reviews</Link>
                   </li>
                 </ul>
               </nav>
-
-              <div className="film-rating">
-                <div className="film-rating__score">{movieInfo.rating}</div>
-                <p className="film-rating__meta">
-                  <span className="film-rating__level">Very good</span>
-                  <span className="film-rating__count">{movieInfo.scoresCount}</span>
-                </p>
-              </div>
-
-              <div className="film-card__text">
-                <p>{movieInfo.description}</p>
-
-                <p></p>
-
-                <p className="film-card__director"><strong>Director: {movieInfo.director}</strong></p>
-
-                <p className="film-card__starring"><strong>Starring: {movieInfo.starring.join(', ')} and other</strong></p>
-              </div>
-              <FilmReviewsList filmReviews={props.filmReviews}/>
+              {setPageState()}
             </div>
           </div>
         </div>
