@@ -9,12 +9,12 @@ function AddReviewForm(): JSX.Element {
     text: '',
   });
 
-  const ratingChangeHandle = ({target}: ChangeEvent<HTMLInputElement>) => setFormData({...formData, starId: target.value});
-  const textChangeHandle = ({target}: ChangeEvent<HTMLTextAreaElement>) => setFormData({...formData, text: target.value});
+  const onChange = ({target}: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+    setFormData({...formData, [target.name]: target.value});
+  };
 
   const formSubmitHandler = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    //console.log(formData.text, formData.starId);
   };
 
   return (
@@ -22,14 +22,14 @@ function AddReviewForm(): JSX.Element {
       <div className="rating__stars">
         {ratingStars.map((_, index) => (
           <>
-            <input className="rating__input" id={`star-${starCount - index}`} type="radio" name="rating" value={starCount - index} onChange={ratingChangeHandle}/>
+            <input className="rating__input" id={`star-${starCount - index}`} type="radio" name="starId" value={starCount - index} onChange={onChange}/>
             <label className="rating__label" htmlFor={`star-${starCount - index}`}>Rating {starCount - index}</label>
           </>
         ))}
       </div>
 
       <div className="add-review__text">
-        <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" value={formData.text} onChange={textChangeHandle}></textarea>
+        <textarea className="add-review__textarea" name="text" id="review-text" placeholder="Review text" value={formData.text} onChange={onChange}></textarea>
         <div className="add-review__submit">
           <button className="add-review__btn" type="submit">Post</button>
         </div>

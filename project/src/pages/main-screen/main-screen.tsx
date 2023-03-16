@@ -2,13 +2,13 @@ import {Helmet} from 'react-helmet-async';
 import FilmsList from '../../components/movies-list/films-list';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import {Films} from '../../types/film';
+import {Film} from '../../types/film';
 
 type MainScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  films: Films;
+  films: Film[];
 }
 
 function MainScreen(props: MainScreenProps): JSX.Element {

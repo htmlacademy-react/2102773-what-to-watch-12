@@ -9,14 +9,14 @@ import MoviesList from '../../pages/movies-list-screen/movies-list-screen';
 import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
-import {Films} from '../../types/film';
+import {Film} from '../../types/film';
 import { FilmReviews } from '../../types/review';
 
 type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  films: Films;
+  films: Film[];
   reviews: FilmReviews[];
 }
 

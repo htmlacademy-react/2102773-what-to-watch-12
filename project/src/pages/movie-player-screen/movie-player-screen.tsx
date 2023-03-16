@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
-import {Films} from '../../types/film';
+import {Film} from '../../types/film';
 
 type MoviePlayerProps = {
-  films: Films;
+  films: Film[];
 }
 
 function MoviePlayer(props: MoviePlayerProps): JSX.Element {

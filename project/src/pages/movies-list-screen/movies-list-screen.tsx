@@ -2,15 +2,18 @@ import {Helmet} from 'react-helmet-async';
 import Avatar from '../../components/avatar/avatar';
 import Footer from '../../components/footer/footer';
 import Logo from '../../components/logo/logo';
-import {Films} from '../../types/film';
+import {Film} from '../../types/film';
 import MovieCard from '../../components/movie-card/movie-card';
+import { useState } from 'react';
 
 type MoviesListProps = {
-  films: Films;
+  films: Film[];
 }
 
 function MoviesList(props: MoviesListProps): JSX.Element {
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
+
+  const [activeCardId, setActiveCardId] = useState(null);
 
   return (
     <div className="user-page">
@@ -31,7 +34,7 @@ function MoviesList(props: MoviesListProps): JSX.Element {
         <div className="catalog__films-list">
           {favoriteFilms.map((film) => (
             <article className="small-film-card catalog__films-card" key={film.id}>
-              <MovieCard film={film}/>
+              <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id as number & null)}/>
             </article>
           )
           )}
