@@ -1,11 +1,29 @@
-function MovieCard(): JSX.Element {
+import {Film} from '../../types/film';
+import {Link} from 'react-router-dom';
+import {AppRoute} from '../../const';
+import { MouseEventHandler } from 'react';
+
+type MovieCardProps = {
+  film: Film;
+  // eslint-disable-next-line react/no-unused-prop-types
+  isActive: boolean;
+  onMouseLeave: MouseEventHandler<HTMLElement>;
+  onMouseOver: MouseEventHandler<HTMLElement>;
+}
+
+function MovieCard(props: MovieCardProps): JSX.Element {
+
   return (
     <>
-      <div className="small-film-card__image">
-        <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
+      <div
+        onMouseOver={props.onMouseOver}
+        onMouseLeave={props.onMouseLeave}
+        className="small-film-card__image"
+      >
+        <img src={props.film.previewImage} alt={props.film.name} width="280" height="175" />
       </div>
       <h3 className="small-film-card__title">
-        <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
+        <Link className="small-film-card__link" to={`${AppRoute.Films}${props.film.id}`}>{props.film.name}</Link>
       </h3>
     </>
   );

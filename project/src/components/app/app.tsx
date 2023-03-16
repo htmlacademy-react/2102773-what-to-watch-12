@@ -9,15 +9,19 @@ import MoviesList from '../../pages/movies-list-screen/movies-list-screen';
 import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
+import {Film} from '../../types/film';
+import { FilmReviews } from '../../types/review';
 
 type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  cardsCount: number;
+  films: Film[];
+  reviews: FilmReviews[];
 }
 
 function App(props: AppScreenProps): JSX.Element {
+
   return (
     <HelmetProvider>
       <BrowserRouter>
@@ -29,7 +33,7 @@ function App(props: AppScreenProps): JSX.Element {
                 filmCardTitle={props.filmCardTitle}
                 filmCardGenre={props.filmCardGenre}
                 filmCardYear={props.filmCardYear}
-                cardsCount={props.cardsCount}
+                films={props.films}
               />
             }
           />
@@ -37,20 +41,24 @@ function App(props: AppScreenProps): JSX.Element {
             path={AppRoute.MyList}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.NoAuth}
+                authorizationStatus={AuthorizationStatus.Auth}
               >
-                <MoviesList />
+                <MoviesList films={props.films} />
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Film}>
-            <Route index element={<MoviePage/>} />
-            <Route path={AppRoute.AddReview} element={<AddReview/>}/>
+          <Route path={AppRoute.Films}>
+            <Route path={AppRoute.Film}>
+              <Route index element={<MoviePage films={props.films} filmReviews={props.reviews}/>}/>
+
+              <Route path={AppRoute.AddReview} element={<AddReview films={props.films}/>}/>
+            </Route>
+
           </Route>
 
           <Route
             path={AppRoute.Player}
-            element={<MoviePlayer/>}
+            element={<MoviePlayer films={props.films}/>}
           />
           <Route
             path={AppRoute.SignIn}

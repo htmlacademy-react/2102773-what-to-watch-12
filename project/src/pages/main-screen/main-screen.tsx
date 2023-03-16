@@ -1,21 +1,19 @@
 import {Helmet} from 'react-helmet-async';
-import MovieCard from '../../components/movie-card/movie-card';
+import FilmsList from '../../components/movies-list/films-list';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import {Film} from '../../types/film';
 
 type MainScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  cardsCount: number;
+  films: Film[];
 }
 
 function MainScreen(props: MainScreenProps): JSX.Element {
 
-  const cardsItem: JSX.Element[] = Array.from({ length: props.cardsCount }, MovieCard).map((card, index) =>
-    // eslint-disable-next-line react/no-array-index-key
-    (<article className="small-film-card catalog__films-card" key={index}>{card}</article>)
-  );
+  const favoriteFilms = props.films.filter((film) => film.isFavorite);
 
   return (
     <>
@@ -56,7 +54,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
                     <use xlinkHref="#add"></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">9</span>
+                  <span className="film-card__count">{favoriteFilms.length}</span>
                 </button>
               </div>
             </div>
@@ -102,7 +100,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           </ul>
 
           <div className="catalog__films-list">
-            {cardsItem}
+            <FilmsList films={props.films}/>
           </div>
 
           <div className="catalog__more">

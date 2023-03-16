@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/app/app';
+import {films} from './mocks/films';
+import { reviews } from './mocks/reviews';
 
 const Setting = {
   filmCardTitle: 'The Grand Budapest Hotel',
   filmCardGenre: 'Drama',
   filmCardYear: 2014,
-  cardsCount: 20,
 } as const;
 
 const root = ReactDOM.createRoot(
@@ -19,7 +20,8 @@ root.render(
       filmCardTitle={Setting.filmCardTitle}
       filmCardGenre={Setting.filmCardGenre}
       filmCardYear={Setting.filmCardYear}
-      cardsCount={Setting.cardsCount}
+      films={films}
+      reviews={reviews}
     />
   </React.StrictMode>,
 );
