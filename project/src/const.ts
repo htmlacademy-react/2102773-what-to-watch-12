@@ -4,7 +4,7 @@ export enum AppRoute {
   Films = '/films/',
   Film = ':id',
   Main = '/',
-  AddReview = ':review',
+  AddReview = 'review',
   Player = '/player/:id'
 }
 
@@ -19,3 +19,6 @@ export enum MoviePageState {
   Details = 'details',
   Reviews = 'reviews'
 }
+
+export const SIMILAR_FILMS_COUNT = 4;
+

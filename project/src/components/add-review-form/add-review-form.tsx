@@ -22,8 +22,8 @@ function AddReviewForm(): JSX.Element {
       <div className="rating__stars">
         {ratingStars.map((_, index) => (
           <>
-            <input className="rating__input" id={`star-${starCount - index}`} type="radio" name="starId" value={starCount - index} onChange={onChange}/>
-            <label className="rating__label" htmlFor={`star-${starCount - index}`}>Rating {starCount - index}</label>
+            <input className="rating__input" key={`${starCount - index}`} id={`star-${starCount - index}`} type="radio" name="starId" value={starCount - index} onChange={onChange}/>
+            <label className="rating__label" key={`${starCount - index + 1}`} htmlFor={`star-${starCount - index}`}>Rating {starCount - index}</label>
           </>
         ))}
       </div>

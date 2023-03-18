@@ -1,13 +1,12 @@
+import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { AppRoute, SIMILAR_FILMS_COUNT } from '../../const';
+import {Film} from '../../types/film';
+import { FilmReviews } from '../../types/review';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import {Film} from '../../types/film';
-import { Link, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
-import { FilmReviews } from '../../types/review';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import MovieCard from '../../components/movie-card/movie-card';
-import { useState } from 'react';
-
 
 type MoviesPageProps = {
   films: Film[];
@@ -78,7 +77,7 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {similarFilms.length !== 1 ? similarFilms.slice(0, 4).map((film) => (
+            {similarFilms.length > 1 ? similarFilms.slice(0, SIMILAR_FILMS_COUNT).map((film) => (
               movieInfo?.id !== film.id ?
                 <article className="small-film-card catalog__films-card" key={film.id}>
                   <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>

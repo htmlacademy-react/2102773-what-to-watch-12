@@ -51,7 +51,16 @@ function App(props: AppScreenProps): JSX.Element {
             <Route path={AppRoute.Film}>
               <Route index element={<MoviePage films={props.films} filmReviews={props.reviews}/>}/>
 
-              <Route path={AppRoute.AddReview} element={<AddReview films={props.films}/>}/>
+              <Route
+                path={AppRoute.AddReview}
+                element={
+                  <PrivateRoute
+                    authorizationStatus={AuthorizationStatus.Auth}
+                  >
+                    <AddReview films={props.films}/>
+                  </PrivateRoute>
+                }
+              />
             </Route>
 
           </Route>
