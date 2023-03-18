@@ -11,6 +11,7 @@ import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
 import {Film} from '../../types/film';
 import { FilmReviews } from '../../types/review';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 type AppScreenProps = {
   filmCardTitle: string;
@@ -25,6 +26,7 @@ function App(props: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route
             path={AppRoute.Main}
