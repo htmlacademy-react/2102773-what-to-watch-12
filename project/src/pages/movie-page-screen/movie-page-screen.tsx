@@ -1,13 +1,13 @@
-import {useState} from 'react';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import {Film} from '../../types/film';
 import { Link, useParams } from 'react-router-dom';
-import { AppRoute, MoviePageState } from '../../const';
+import { AppRoute } from '../../const';
 import { FilmReviews } from '../../types/review';
-import FilmDetailsList from '../../components/film-details/film-details';
-import FilmReviewsList from '../../components/film-reviews/film-reviews';
-import FilmOverviewList from '../../components/film-overview/film-overview';
+import FilmTabs from '../../components/film-tabs/film-tabs';
+import MovieCard from '../../components/movie-card/movie-card';
+import { useState } from 'react';
+
 
 type MoviesPageProps = {
   films: Film[];
@@ -19,19 +19,9 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
   const movieInfo = props.films.find((film) => film.id === Number(params.id));
   const filmReview = props.filmReviews.find((review) => review.id === Number(params.id));
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
+  const similarFilms = props.films.filter((film) => film.genre === movieInfo?.genre);
 
-  const [tab, setActiveTab] = useState(MoviePageState.Overview);
-
-  function setPageState () {
-    switch (tab) {
-      case MoviePageState.Overview:
-        return <FilmOverviewList films={movieInfo}/>;
-      case MoviePageState.Reviews:
-        return <FilmReviewsList filmReview={filmReview}/>;
-      case MoviePageState.Details:
-        return <FilmDetailsList films={movieInfo}/>;
-    }
-  }
+  const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   return (
     <>
@@ -78,23 +68,7 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
             <div className="film-card__poster film-card__poster--big">
               <img src={movieInfo?.posterImage} alt={movieInfo?.name} width="218" height="327" />
             </div>
-
-            <div className="film-card__desc">
-              <nav className="film-nav film-card__nav">
-                <ul className="film-nav__list">
-                  <li className="film-nav__item film-nav__item--active">
-                    <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Overview)} to=''>Overview</Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Details)} to=''>Details</Link>
-                  </li>
-                  <li className="film-nav__item">
-                    <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Reviews)} to=''>Reviews</Link>
-                  </li>
-                </ul>
-              </nav>
-              {setPageState()}
-            </div>
+            <FilmTabs films={movieInfo} filmReview={filmReview}/>
           </div>
         </div>
       </section>
@@ -104,41 +78,13 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/fantastic-beasts-the-crimes-of-grindelwald.jpg" alt="Fantastic Beasts: The Crimes of Grindelwald" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Fantastic Beasts: The Crimes of Grindelwald</a>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/bohemian-rhapsody.jpg" alt="Bohemian Rhapsody" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Bohemian Rhapsody</a>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/macbeth.jpg" alt="Macbeth" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Macbeth</a>
-              </h3>
-            </article>
-
-            <article className="small-film-card catalog__films-card">
-              <div className="small-film-card__image">
-                <img src="img/aviator.jpg" alt="Aviator" width="280" height="175" />
-              </div>
-              <h3 className="small-film-card__title">
-                <a className="small-film-card__link" href="film-page.html">Aviator</a>
-              </h3>
-            </article>
+            {similarFilms.length !== 1 ? similarFilms.slice(0, 4).map((film) => (
+              movieInfo?.id !== film.id ?
+                <article className="small-film-card catalog__films-card" key={film.id}>
+                  <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>
+                </article> : ''
+            )
+            ) : 'No similar films'}
           </div>
         </section>
 
