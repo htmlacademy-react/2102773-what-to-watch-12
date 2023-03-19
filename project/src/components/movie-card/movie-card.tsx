@@ -15,7 +15,7 @@ function MovieCard(props: MovieCardProps): JSX.Element {
 
   return (
     <>
-      <VideoPlayer src={props.film.previewVideoLink} poster={props.film.previewImage}
+      <VideoPlayer src={props.film.previewVideoLink} poster={props.film.previewImage} alt={props.film.name}
         isPlaying={props.isActive} onMouseOver={props.onMouseOver} onMouseLeave={props.onMouseLeave}
       />
       <h3 className="small-film-card__title">
