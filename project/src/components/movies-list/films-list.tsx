@@ -14,9 +14,9 @@ function FilmsList(props: FilmsListProps): JSX.Element {
     <>
       {props.films.map((film) => (
         <article className="small-film-card catalog__films-card" key={film.id}>
-          <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>
+          <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => window.setTimeout(() => setActiveCardId(film.id), 1000)}/>
         </article>
-      ))};
+      ))}
     </>
   );
 }

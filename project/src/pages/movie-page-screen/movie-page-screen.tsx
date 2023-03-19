@@ -78,10 +78,10 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
 
           <div className="catalog__films-list">
             {similarFilms.length > 1 ? similarFilms.slice(0, SIMILAR_FILMS_COUNT).map((film) => (
-              movieInfo?.id !== film.id ?
+              movieInfo?.id !== film.id &&
                 <article className="small-film-card catalog__films-card" key={film.id}>
                   <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>
-                </article> : ''
+                </article>
             )
             ) : 'No similar films'}
           </div>

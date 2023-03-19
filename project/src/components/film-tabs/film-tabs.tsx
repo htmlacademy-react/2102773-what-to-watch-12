@@ -31,13 +31,13 @@ function FilmTabs(props: FilmTabsProps): JSX.Element {
     <div className="film-card__desc">
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
-          <li className="film-nav__item film-nav__item--active">
+          <li className={`${tab === MoviePageState.Overview ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}`}>
             <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Overview)} to=''>Overview</Link>
           </li>
-          <li className="film-nav__item">
+          <li className={`${tab === MoviePageState.Details ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}`}>
             <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Details)} to=''>Details</Link>
           </li>
-          <li className="film-nav__item">
+          <li className={`${tab === MoviePageState.Reviews ? 'film-nav__item film-nav__item--active' : 'film-nav__item'}`}>
             <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Reviews)} to=''>Reviews</Link>
           </li>
         </ul>
