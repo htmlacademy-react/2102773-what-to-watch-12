@@ -26,16 +26,3 @@ function MovieCard(props: MovieCardProps): JSX.Element {
 }
 
 export default MovieCard;
-
-// {props.isActive ? <video src={props.film.previewVideoLink} className="player__video" poster={props.film.previewImage} autoPlay muted></video> :
-// <img src={props.film.previewImage} alt={props.film.name} width="280" height="175" />}
-
-/* <div
-onMouseOver={props.onMouseOver}
-onMouseLeave={props.onMouseLeave}
-className="small-film-card__image"
->
-
-{props.isActive ? <video src={props.film.previewVideoLink} className="player__video" poster={props.film.previewImage} autoPlay muted></video> :
-  <img src={props.film.previewImage} alt={props.film.name} width="280" height="175" />}
-</div> */

@@ -1,5 +1,6 @@
-import {useEffect, useRef, MouseEventHandler} from 'react';
+import {useEffect, useRef, MouseEventHandler, useState} from 'react';
 import { DELAY } from '../../const';
+import { useElementListener } from '../../hooks/use-element-listener';
 
 type VideoPlayerProps = {
   src: string;
@@ -12,7 +13,11 @@ type VideoPlayerProps = {
 
 function VideoPlayer(props: VideoPlayerProps): JSX.Element {
 
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useElementListener('loadeddata', videoRef, () => setIsLoaded(true));
 
   useEffect(() => {
 
@@ -21,13 +26,13 @@ function VideoPlayer(props: VideoPlayerProps): JSX.Element {
     }
 
     setTimeout(() => {
-      if (props.isPlaying && videoRef.current) {
-        videoRef.current.play();
+      if (videoRef.current && isLoaded) {
         videoRef.current.muted = true;
+        videoRef.current.play();
       }
     }, DELAY);
 
-  }, [props.isPlaying]);
+  }, [props.isPlaying, isLoaded]);
 
   return (
     <div onMouseOver={props.onMouseOver} onMouseLeave={props.onMouseLeave} className="small-film-card__image">
