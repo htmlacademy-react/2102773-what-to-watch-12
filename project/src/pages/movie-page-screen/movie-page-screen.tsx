@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AppRoute, SIMILAR_FILMS_COUNT } from '../../const';
 import {Film} from '../../types/film';
 import { FilmReviews } from '../../types/review';
@@ -22,6 +22,8 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
 
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
   return (
     <>
       <section className="film-card film-card--full">
@@ -43,7 +45,7 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button">
+                <button className="btn btn--play film-card__button" type="button" onClick={() => navigate(`/player/${String(movieInfo?.id)}`)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
