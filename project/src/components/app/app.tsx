@@ -11,6 +11,7 @@ import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
 import {Film} from '../../types/film';
 import { FilmReviews } from '../../types/review';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 type AppScreenProps = {
   filmCardTitle: string;
@@ -25,6 +26,7 @@ function App(props: AppScreenProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route
             path={AppRoute.Main}
@@ -51,7 +53,16 @@ function App(props: AppScreenProps): JSX.Element {
             <Route path={AppRoute.Film}>
               <Route index element={<MoviePage films={props.films} filmReviews={props.reviews}/>}/>
 
-              <Route path={AppRoute.AddReview} element={<AddReview films={props.films}/>}/>
+              <Route
+                path={AppRoute.AddReview}
+                element={
+                  <PrivateRoute
+                    authorizationStatus={AuthorizationStatus.Auth}
+                  >
+                    <AddReview films={props.films}/>
+                  </PrivateRoute>
+                }
+              />
             </Route>
 
           </Route>

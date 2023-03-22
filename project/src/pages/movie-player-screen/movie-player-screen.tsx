@@ -1,4 +1,5 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AppRoute } from '../../const';
 import {Film} from '../../types/film';
 
 type MoviePlayerProps = {
@@ -8,12 +9,13 @@ type MoviePlayerProps = {
 function MoviePlayer(props: MoviePlayerProps): JSX.Element {
   const params = useParams();
   const [movieInfo] = props.films.filter((film) => film.id === Number(params.id));
+  const navigate = useNavigate();
 
   return (
     <div className="player">
-      <video src={movieInfo.videoLink} className="player__video" poster={movieInfo.previewImage}></video>
+      <video src={movieInfo.videoLink} className="player__video" poster={movieInfo.previewImage} autoPlay></video>
 
-      <button type="button" className="player__exit">Exit</button>
+      <button type="button" className="player__exit" onClick={() => navigate(`${AppRoute.Films}${movieInfo.id}`)}>Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
