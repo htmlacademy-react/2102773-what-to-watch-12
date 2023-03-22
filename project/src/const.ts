@@ -15,9 +15,9 @@ export enum AuthorizationStatus {
 }
 
 export enum MoviePageState {
-  Overview = 'overview',
-  Details = 'details',
-  Reviews = 'reviews'
+  Overview = 'Overview',
+  Details = 'Details',
+  Reviews = 'Reviews'
 }
 
 export const SIMILAR_FILMS_COUNT = 4;

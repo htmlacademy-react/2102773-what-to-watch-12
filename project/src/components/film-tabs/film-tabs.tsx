@@ -13,11 +13,11 @@ type FilmTabsProps = {
   filmReview: FilmReviews | undefined;
 }
 
+const moviePageTabs = Object.values(MoviePageState);
+
 function FilmTabs(props: FilmTabsProps): JSX.Element {
-
   const [tab, setActiveTab] = useState(MoviePageState.Overview);
-
-  function setPageState () {
+  const renderTab = () => {
     switch (tab) {
       case MoviePageState.Overview:
         return <FilmOverviewList films={props.films}/>;
@@ -26,24 +26,20 @@ function FilmTabs(props: FilmTabsProps): JSX.Element {
       case MoviePageState.Details:
         return <FilmDetailsList films={props.films}/>;
     }
-  }
+  };
 
   return (
     <div className="film-card__desc">
       <nav className="film-nav film-card__nav">
         <ul className="film-nav__list">
-          <li className={cn('film-nav__item', {'film-nav__item--active': tab === MoviePageState.Overview})}>
-            <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Overview)} to=''>Overview</Link>
-          </li>
-          <li className={cn('film-nav__item', {'film-nav__item--active': tab === MoviePageState.Details})}>
-            <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Details)} to=''>Details</Link>
-          </li>
-          <li className={cn('film-nav__item', {'film-nav__item--active': tab === MoviePageState.Reviews})}>
-            <Link className="film-nav__link" onClick={() => setActiveTab(MoviePageState.Reviews)} to=''>Reviews</Link>
-          </li>
+          {moviePageTabs.map((moviePageTab) => (
+            <li className={cn('film-nav__item', {'film-nav__item--active': tab === moviePageTab})} key={moviePageTab}>
+              <Link className="film-nav__link" onClick={() => setActiveTab(moviePageTab)} to=''>{moviePageTab}</Link>
+            </li>
+          ))}
         </ul>
       </nav>
-      {setPageState()}
+      {renderTab()}
     </div>
   );
 }

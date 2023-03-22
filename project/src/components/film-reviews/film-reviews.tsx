@@ -17,7 +17,7 @@ function FilmReviewsList(props: FilmReviewsProps): JSX.Element {
 
               <footer className="review__details">
                 <cite className="review__author">{review.user.name}</cite>
-                <time className="review__date" dateTime="2016-12-24">{dayjs(review.date).format('MMMM DD, YYYY')}</time>
+                <time className="review__date" dateTime={review.date}>{dayjs(review.date).format('MMMM DD, YYYY')}</time>
               </footer>
             </blockquote>
 

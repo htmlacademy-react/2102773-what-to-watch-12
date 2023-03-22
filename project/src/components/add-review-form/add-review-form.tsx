@@ -1,8 +1,9 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+
+const starCount = 10;
+const ratingStars = [...Array(starCount).keys()];
 
 function AddReviewForm(): JSX.Element {
-  const starCount = 10;
-  const ratingStars = [...Array(starCount) as [number]];
 
   const [formData, setFormData] = useState({
     starId: '',
@@ -20,11 +21,11 @@ function AddReviewForm(): JSX.Element {
   return (
     <form action="#" className="add-review__form" onSubmit={formSubmitHandler}>
       <div className="rating__stars">
-        {ratingStars.map((_, index) => (
-          <>
-            <input className="rating__input" key={`${starCount - index}`} id={`star-${starCount - index}`} type="radio" name="starId" value={starCount - index} onChange={onChange}/>
-            <label className="rating__label" key={`${starCount - index + 1}`} htmlFor={`star-${starCount - index}`}>Rating {starCount - index}</label>
-          </>
+        {ratingStars.map((ratingStar) => (
+          <Fragment key={ratingStar}>
+            <input className="rating__input" id={`star-${starCount - ratingStar}`} type="radio" name="starId" value={starCount - ratingStar} onChange={onChange}/>
+            <label className="rating__label" htmlFor={`star-${starCount - ratingStar}`}>Rating {starCount - ratingStar}</label>
+          </Fragment>
         ))}
       </div>
 
