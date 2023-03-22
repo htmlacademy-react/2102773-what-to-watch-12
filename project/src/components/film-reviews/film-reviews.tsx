@@ -1,8 +1,8 @@
-import { FilmReviews } from '../../types/review';
+import { FilmReview } from '../../types/review';
 import dayjs from 'dayjs';
 
 type FilmReviewsProps = {
-  filmReview: FilmReviews | undefined;
+  filmReview: FilmReview | undefined;
 }
 
 function FilmReviewsList(props: FilmReviewsProps): JSX.Element {

@@ -2,15 +2,15 @@ import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import {Film} from '../../types/film';
-import { FilmReviews } from '../../types/review';
+import { FilmReview } from '../../types/review';
 import { MoviePageState } from '../../const';
 import FilmDetailsList from '../../components/film-details/film-details';
 import FilmReviewsList from '../../components/film-reviews/film-reviews';
 import FilmOverviewList from '../../components/film-overview/film-overview';
 
 type FilmTabsProps = {
-  films: Film | undefined;
-  filmReview: FilmReviews | undefined;
+  film: Film | undefined;
+  filmReview: FilmReview | undefined;
 }
 
 const moviePageTabs = Object.values(MoviePageState);
@@ -20,11 +20,11 @@ function FilmTabs(props: FilmTabsProps): JSX.Element {
   const renderTab = () => {
     switch (tab) {
       case MoviePageState.Overview:
-        return <FilmOverviewList films={props.films}/>;
+        return <FilmOverviewList film={props.film}/>;
       case MoviePageState.Reviews:
         return <FilmReviewsList filmReview={props.filmReview}/>;
       case MoviePageState.Details:
-        return <FilmDetailsList films={props.films}/>;
+        return <FilmDetailsList film={props.film}/>;
     }
   };
 

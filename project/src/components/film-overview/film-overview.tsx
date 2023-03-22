@@ -1,7 +1,7 @@
 import { Film } from '../../types/film';
 
 type FilmOverviewProps = {
-  films: Film | undefined;
+  film: Film | undefined;
 }
 
 function setFilmRating (rating: number) {
@@ -27,22 +27,22 @@ function FilmOverviewList(props: FilmOverviewProps): JSX.Element {
   return (
     <>
       <div className="film-rating">
-        <div className="film-rating__score">{props.films?.rating}</div>
+        <div className="film-rating__score">{props.film?.rating}</div>
         <p className="film-rating__meta">
           <span className="film-rating__level">
-            {setFilmRating(props.films?.rating as number)}
+            {setFilmRating(props.film?.rating as number)}
           </span>
-          <span className="film-rating__count">{props.films?.scoresCount}</span>
+          <span className="film-rating__count">{props.film?.scoresCount}</span>
         </p>
       </div>
       <div className="film-card__text">
-        <p>{props.films?.description}</p>
+        <p>{props.film?.description}</p>
 
         <p></p>
 
-        <p className="film-card__director"><strong>Director: {props.films?.director}</strong></p>
+        <p className="film-card__director"><strong>Director: {props.film?.director}</strong></p>
 
-        <p className="film-card__starring"><strong>Starring: {props.films?.starring.join(', ')} and other</strong></p>
+        <p className="film-card__starring"><strong>Starring: {props.film?.starring.join(', ')} and other</strong></p>
       </div>
     </>
   );
