@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AppRoute, SIMILAR_FILMS_COUNT } from '../../const';
 import {Film} from '../../types/film';
-import { FilmReviews } from '../../types/review';
+import { FilmReview } from '../../types/review';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import MovieCard from '../../components/movie-card/movie-card';
 
-type MoviesPageProps = {
+type MoviePageProps = {
   films: Film[];
-  filmReviews: FilmReviews[];
+  filmReviews: FilmReview[];
 }
 
-function MoviePage(props: MoviesPageProps): JSX.Element {
+function MoviePage(props: MoviePageProps): JSX.Element {
   const params = useParams();
   const movieInfo = props.films.find((film) => film.id === Number(params.id));
   const filmReview = props.filmReviews.find((review) => review.id === Number(params.id));
@@ -69,7 +69,7 @@ function MoviePage(props: MoviesPageProps): JSX.Element {
             <div className="film-card__poster film-card__poster--big">
               <img src={movieInfo?.posterImage} alt={movieInfo?.name} width="218" height="327" />
             </div>
-            <FilmTabs films={movieInfo} filmReview={filmReview}/>
+            <FilmTabs film={movieInfo} filmReview={filmReview}/>
           </div>
         </div>
       </section>

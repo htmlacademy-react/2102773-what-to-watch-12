@@ -1,7 +1,7 @@
 import { Film } from '../../types/film';
 
 type FilmDetailsProps = {
-  films: Film | undefined;
+  film: Film | undefined;
 }
 
 function getTimeFromMins(mins: number) {
@@ -17,12 +17,12 @@ function FilmDetailsList(props: FilmDetailsProps): JSX.Element {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Director</strong>
-          <span className="film-card__details-value">{props.films?.director}</span>
+          <span className="film-card__details-value">{props.film?.director}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Starring</strong>
           <span className="film-card__details-value">
-            {props.films?.starring.join(', \n')}
+            {props.film?.starring.join(', \n')}
           </span>
         </p>
       </div>
@@ -30,15 +30,15 @@ function FilmDetailsList(props: FilmDetailsProps): JSX.Element {
       <div className="film-card__text-col">
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Run Time</strong>
-          <span className="film-card__details-value">{getTimeFromMins(props.films?.runTime as number)}</span>
+          <span className="film-card__details-value">{getTimeFromMins(props.film?.runTime as number)}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Genre</strong>
-          <span className="film-card__details-value">{props.films?.genre}</span>
+          <span className="film-card__details-value">{props.film?.genre}</span>
         </p>
         <p className="film-card__details-item">
           <strong className="film-card__details-name">Released</strong>
-          <span className="film-card__details-value">{props.films?.released}</span>
+          <span className="film-card__details-value">{props.film?.released}</span>
         </p>
       </div>
     </div>
