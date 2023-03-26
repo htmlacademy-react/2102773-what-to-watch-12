@@ -1,28 +1,28 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {changeGenre, getFilmsList} from '../../store/action';
 import { Film } from '../../types/film';
 import cn from 'classnames';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeGenre, gettingFilmsList} from '../../store/action';
-import { DEFAULT_FILTER, MOVIE_CARD_COUNT } from '../../const';
+import { DEFAULT_FILTER, MOVIE_CARDS_COUNT } from '../../const';
 import FilmsList from '../movies-list/films-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
-import { useState } from 'react';
 
 type GenresListProps = {
   films: Film[];
 }
 
-const makeFilmsGenresArray = (films: Film[]) => {
+const createGenresList = (films: Film[]) => {
   const filmsGenres = films.map((film) => film.genre);
   filmsGenres.unshift(DEFAULT_FILTER);
-  const uniqSet = new Set(filmsGenres);
-  return [...uniqSet];
+  const uniqGenres = new Set(filmsGenres);
+  return [...uniqGenres];
 };
 
-const sliceFilmCards = (filmsList: Film[], n: number) => {
-  if (filmsList.length > MOVIE_CARD_COUNT) {
-    const filmCardsArray = filmsList.slice(0, MOVIE_CARD_COUNT + n);
-    return filmCardsArray;
+const sliceFilmsList = (filmsList: Film[], count: number) => {
+  if (filmsList.length > MOVIE_CARDS_COUNT) {
+    const slicedFilmsList = filmsList.slice(0, MOVIE_CARDS_COUNT + count);
+    return slicedFilmsList;
   }
   return filmsList;
 };
@@ -33,18 +33,18 @@ function GenresList(props: GenresListProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const[count, setCount] = useState(0);
-  const sliceFilms = sliceFilmCards(filteredFilmsList, count);
+  const slicedFilms = sliceFilmsList(filteredFilmsList, count);
 
-  const newLength = Math.min(filteredFilmsList.length, sliceFilms.length);
+  const newLength = Math.min(filteredFilmsList.length, slicedFilms.length);
 
   return (
     <>
       <ul className="catalog__genres-list">
-        {makeFilmsGenresArray(props.films).map((filmsGenre) => (
+        {createGenresList(props.films).map((filmsGenre) => (
           <li className={cn('catalog__genres-item', { 'catalog__genres-item--active': genre === filmsGenre })} key={filmsGenre}>
             <Link to='' className="catalog__genres-link" onClick={() => {
               dispatch(changeGenre({ genre: filmsGenre }));
-              dispatch(gettingFilmsList());
+              dispatch(getFilmsList());
               setCount(0);
             }}
             >{filmsGenre}
@@ -52,8 +52,8 @@ function GenresList(props: GenresListProps): JSX.Element {
           </li>
         ))}
       </ul>
-      <FilmsList films={sliceFilms} />
-      {filteredFilmsList.length > sliceFilms.length &&
+      <FilmsList films={slicedFilms} />
+      {filteredFilmsList.length > slicedFilms.length &&
          <ShowMoreButton onShowMoreButtonClick={() => setCount(newLength)}/>}
     </>
   );

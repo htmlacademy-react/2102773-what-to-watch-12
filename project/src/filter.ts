@@ -1,11 +1,11 @@
 import { DEFAULT_FILTER } from './const';
 import { Film } from './types/film';
 
-export const makeFilteredFilmsArray = (films: Film[], condition: string) => {
-  let filmsByGenre;
-  if (condition === DEFAULT_FILTER) {
+export const filterFilms = (films: Film[], genre: string) => {
+  let filmsByGenre: Film[];
+  if (genre === DEFAULT_FILTER) {
     return (filmsByGenre = films);
   }
-  filmsByGenre = films.filter((film) => film.genre === condition);
+  filmsByGenre = films.filter((film) => film.genre === genre);
   return filmsByGenre;
 };
