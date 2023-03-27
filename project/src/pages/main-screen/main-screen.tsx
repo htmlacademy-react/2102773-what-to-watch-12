@@ -3,8 +3,6 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import {Film} from '../../types/film';
 import GenresList from '../../components/genres-list/genres-list';
-import Logo from '../../components/logo/logo';
-import Avatar from '../../components/avatar/avatar';
 
 type MainScreenProps = {
   filmCardTitle: string;
@@ -28,10 +26,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
-        <Header>
-          <Logo/>
-          <Avatar/>
-        </Header>
+        <Header/>
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">

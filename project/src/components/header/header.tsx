@@ -1,9 +1,11 @@
-import { PropsWithChildren } from 'react';
+import Avatar from '../avatar/avatar';
+import Logo from '../logo/logo';
 
-function Header(props: PropsWithChildren): JSX.Element {
+function Header(): JSX.Element {
   return (
     <header className="page-header user-page__head">
-      {props.children}
+      <Logo/>
+      <Avatar/>
     </header>
   );
 }
