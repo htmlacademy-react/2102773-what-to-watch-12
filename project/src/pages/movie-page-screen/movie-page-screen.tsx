@@ -7,6 +7,8 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import MovieCard from '../../components/movie-card/movie-card';
+import Logo from '../../components/logo/logo';
+import Avatar from '../../components/avatar/avatar';
 
 type MoviePageProps = {
   films: Film[];
@@ -33,8 +35,10 @@ function MoviePage(props: MoviePageProps): JSX.Element {
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
-
-          <Header/>
+          <Header>
+            <Logo/>
+            <Avatar/>
+          </Header>
 
           <div className="film-card__wrap">
             <div className="film-card__desc">
