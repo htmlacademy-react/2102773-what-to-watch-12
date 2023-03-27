@@ -21,5 +21,6 @@ export enum MoviePageState {
 }
 
 export const SIMILAR_FILMS_COUNT = 4;
-
 export const DELAY = 1000;
+export const DEFAULT_FILTER = 'All genres';
+export const MOVIE_CARDS_COUNT = 3;
