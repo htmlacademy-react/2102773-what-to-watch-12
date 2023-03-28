@@ -33,9 +33,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
-
           <Header/>
-
           <div className="film-card__wrap">
             <div className="film-card__desc">
               <h2 className="film-card__title">{movieInfo?.name}</h2>

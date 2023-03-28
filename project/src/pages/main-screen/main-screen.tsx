@@ -4,7 +4,6 @@ import Footer from '../../components/footer/footer';
 import {Film} from '../../types/film';
 import GenresList from '../../components/genres-list/genres-list';
 
-
 type MainScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
@@ -27,9 +26,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
-
         <Header/>
-
         <div className="film-card__wrap">
           <div className="film-card__info">
             <div className="film-card__poster">
@@ -68,9 +65,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
           <h2 className="catalog__title visually-hidden">Catalog</h2>
           <GenresList films={props.films}/>
         </section>
-
         <Footer/>
-
       </div>
     </>
   );

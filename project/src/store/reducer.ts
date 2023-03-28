@@ -1,7 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {setGenre } from './action';
+import {setGenre} from './action';
 import {films} from '../mocks/films';
-import { DEFAULT_FILTER} from '../const';
+import {DEFAULT_FILTER} from '../const';
 
 const initialState = {
   genre: DEFAULT_FILTER,
