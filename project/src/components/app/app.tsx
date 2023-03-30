@@ -9,19 +9,28 @@ import MoviesList from '../../pages/movies-list-screen/movies-list-screen';
 import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
-import {Film} from '../../types/film';
 import { FilmReview } from '../../types/review';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
+import { useAppSelector } from '../../hooks';
+import LoadingScreen from '../../pages/loading-screen/loading-screen';
 
 type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  films: Film[];
   reviews: FilmReview[];
 }
 
 function App(props: AppScreenProps): JSX.Element {
+
+  const filmsList = useAppSelector((state) => state.filmsList);
+  const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
+
+  if (isFilmsDataLoading) {
+    return (
+      <LoadingScreen/>
+    );
+  }
 
   return (
     <HelmetProvider>
@@ -35,7 +44,7 @@ function App(props: AppScreenProps): JSX.Element {
                 filmCardTitle={props.filmCardTitle}
                 filmCardGenre={props.filmCardGenre}
                 filmCardYear={props.filmCardYear}
-                films={props.films}
+                films={filmsList}
               />
             }
           />
@@ -45,13 +54,13 @@ function App(props: AppScreenProps): JSX.Element {
               <PrivateRoute
                 authorizationStatus={AuthorizationStatus.Auth}
               >
-                <MoviesList films={props.films} />
+                <MoviesList films={filmsList} />
               </PrivateRoute>
             }
           />
           <Route path={AppRoute.Films}>
             <Route path={AppRoute.Film}>
-              <Route index element={<MoviePage films={props.films} filmReviews={props.reviews}/>}/>
+              <Route index element={<MoviePage films={filmsList} filmReviews={props.reviews}/>}/>
 
               <Route
                 path={AppRoute.AddReview}
@@ -59,7 +68,7 @@ function App(props: AppScreenProps): JSX.Element {
                   <PrivateRoute
                     authorizationStatus={AuthorizationStatus.Auth}
                   >
-                    <AddReview films={props.films}/>
+                    <AddReview films={filmsList}/>
                   </PrivateRoute>
                 }
               />
@@ -69,7 +78,7 @@ function App(props: AppScreenProps): JSX.Element {
 
           <Route
             path={AppRoute.Player}
-            element={<MoviePlayer films={props.films}/>}
+            element={<MoviePlayer films={filmsList}/>}
           />
           <Route
             path={AppRoute.SignIn}
