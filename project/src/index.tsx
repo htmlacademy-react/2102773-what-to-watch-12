@@ -4,7 +4,9 @@ import {Provider} from 'react-redux';
 import App from './components/app/app';
 import { reviews } from './mocks/reviews';
 import {store} from './store';
-import { fetchFilmsAction } from './store/api-actions';
+import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
+import {ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Setting = {
   filmCardTitle: 'The Grand Budapest Hotel',
@@ -12,6 +14,7 @@ const Setting = {
   filmCardYear: 2014,
 } as const;
 
+store.dispatch(checkAuthAction());
 store.dispatch(fetchFilmsAction());
 
 const root = ReactDOM.createRoot(
@@ -21,6 +24,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store = {store}>
+      <ToastContainer />
       <App
         filmCardTitle={Setting.filmCardTitle}
         filmCardGenre={Setting.filmCardGenre}

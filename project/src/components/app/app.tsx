@@ -24,9 +24,10 @@ type AppScreenProps = {
 function App(props: AppScreenProps): JSX.Element {
 
   const filmsList = useAppSelector((state) => state.filmsList);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
 
-  if (isFilmsDataLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsDataLoading) {
     return (
       <LoadingScreen/>
     );
@@ -52,7 +53,7 @@ function App(props: AppScreenProps): JSX.Element {
             path={AppRoute.MyList}
             element={
               <PrivateRoute
-                authorizationStatus={AuthorizationStatus.Auth}
+                authorizationStatus={authorizationStatus}
               >
                 <MoviesList films={filmsList} />
               </PrivateRoute>
@@ -66,7 +67,7 @@ function App(props: AppScreenProps): JSX.Element {
                 path={AppRoute.AddReview}
                 element={
                   <PrivateRoute
-                    authorizationStatus={AuthorizationStatus.Auth}
+                    authorizationStatus={authorizationStatus}
                   >
                     <AddReview films={filmsList}/>
                   </PrivateRoute>
