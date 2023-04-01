@@ -11,7 +11,13 @@ export type Review = {
 
 export type Reviews = Review[];
 
-export type FilmReview = {
-  id: number;
-  reviews: Reviews;
+// export type FilmReview = {
+//   id: number;
+//   reviews: Reviews;
+// }
+
+export type AddReview = {
+  comment: string;
+  rating: number;
+  filmId: string;
 }

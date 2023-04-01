@@ -9,7 +9,6 @@ import MoviesList from '../../pages/movies-list-screen/movies-list-screen';
 import SignIn from '../../pages/sign-in-screen/sign-in-screen';
 import PageNotFound from '../page-not-found/page-not-found';
 import PrivateRoute from '../private-route/private-route';
-import { FilmReview } from '../../types/review';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
@@ -18,7 +17,6 @@ type AppScreenProps = {
   filmCardTitle: string;
   filmCardGenre: string;
   filmCardYear: number;
-  reviews: FilmReview[];
 }
 
 function App(props: AppScreenProps): JSX.Element {
@@ -26,6 +24,7 @@ function App(props: AppScreenProps): JSX.Element {
   const filmsList = useAppSelector((state) => state.filmsList);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
+  const isFilmLoadingError = useAppSelector((state) => state.isFilmLoadingError);
 
   if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsDataLoading) {
     return (
@@ -61,7 +60,7 @@ function App(props: AppScreenProps): JSX.Element {
           />
           <Route path={AppRoute.Films}>
             <Route path={AppRoute.Film}>
-              <Route index element={<MoviePage films={filmsList} filmReviews={props.reviews}/>}/>
+              <Route index element={!isFilmLoadingError ? <MoviePage films={filmsList}/> : <PageNotFound/>}/>
 
               <Route
                 path={AppRoute.AddReview}
@@ -69,7 +68,7 @@ function App(props: AppScreenProps): JSX.Element {
                   <PrivateRoute
                     authorizationStatus={authorizationStatus}
                   >
-                    <AddReview films={filmsList}/>
+                    <AddReview/>
                   </PrivateRoute>
                 }
               />

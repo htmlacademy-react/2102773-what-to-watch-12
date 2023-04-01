@@ -13,10 +13,11 @@ function SignIn(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const redirect = useNavigate();
+
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
   };
-  const navigate = useNavigate();
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -26,8 +27,8 @@ function SignIn(): JSX.Element {
         login: loginRef.current.value,
         password: passwordRef.current.value,
       });
+      redirect(AppRoute.Main);
     }
-    navigate(AppRoute.Main);
   };
 
   return (

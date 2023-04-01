@@ -9,6 +9,7 @@ type VideoPlayerProps = {
   alt: string;
   onMouseOver: MouseEventHandler<HTMLElement>;
   onMouseLeave: MouseEventHandler<HTMLElement>;
+  onClick: MouseEventHandler<HTMLElement>;
 }
 
 function VideoPlayer(props: VideoPlayerProps): JSX.Element {
@@ -30,9 +31,9 @@ function VideoPlayer(props: VideoPlayerProps): JSX.Element {
   }, [props.isPlaying, isLoaded]);
 
   return (
-    <div onMouseOver={props.onMouseOver} onMouseLeave={props.onMouseLeave} className="small-film-card__image">
+    <div onMouseOver={props.onMouseOver} onMouseLeave={props.onMouseLeave} onClick={props.onClick} className="small-film-card__image">
       {props.isPlaying ? <video src={props.src} className="player__video" poster={props.poster} ref={videoRef}></video> :
-        <img src={props.poster} alt={props.alt} width="280" height="175" />}
+        <img src={props.poster} alt={props.alt} width="280" height="175"/>}
     </div>
   );
 }

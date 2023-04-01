@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {Provider} from 'react-redux';
 import App from './components/app/app';
-import { reviews } from './mocks/reviews';
 import {store} from './store';
 import { checkAuthAction, fetchFilmsAction } from './store/api-actions';
 import {ToastContainer} from 'react-toastify';
@@ -29,7 +28,6 @@ root.render(
         filmCardTitle={Setting.filmCardTitle}
         filmCardGenre={Setting.filmCardGenre}
         filmCardYear={Setting.filmCardYear}
-        reviews={reviews}
       />
     </Provider>
   </React.StrictMode>,

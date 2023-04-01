@@ -1,28 +1,51 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { AppRoute, SIMILAR_FILMS_COUNT } from '../../const';
+import { AppRoute, AuthorizationStatus, SIMILAR_FILMS_COUNT } from '../../const';
 import {Film} from '../../types/film';
-import { FilmReview } from '../../types/review';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import MovieCard from '../../components/movie-card/movie-card';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction } from '../../store/api-actions';
+import { loadFilmById } from '../../store/action';
 
 type MoviePageProps = {
   films: Film[];
-  filmReviews: FilmReview[];
 }
 
 function MoviePage(props: MoviePageProps): JSX.Element {
+
   const params = useParams();
-  const movieInfo = props.films.find((film) => film.id === Number(params.id));
-  const filmReview = props.filmReviews.find((review) => review.id === Number(params.id));
+  const navigate = useNavigate();
+  const isFilmLoadingError = useAppSelector((state) => state.isFilmLoadingError);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+
+    dispatch(fetchFilmByIdAction(String(params.id)));
+    dispatch(fetchCommentsByIdAction(String(params.id)));
+    dispatch(fetchSimilarByIdAction(String(params.id)));
+
+    return () => {
+      dispatch(loadFilmById(undefined));
+    };
+
+  }, [dispatch, isFilmLoadingError, navigate, params.id]);
+
+  const movieInfo = useAppSelector((state) => state.film);
+  const filmReview = useAppSelector((state) => state.comments);
+  const similarFilms = useAppSelector((state) => state.similarFilms);
+
+  // исправить
+
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
-  const similarFilms = props.films.filter((film) => film.genre === movieInfo?.genre);
+
+  //
 
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
-  const navigate = useNavigate();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   return (
     <>
@@ -56,7 +79,9 @@ function MoviePage(props: MoviePageProps): JSX.Element {
                   <span>My list</span>
                   <span className="film-card__count">{favoriteFilms.length}</span>
                 </button>
-                <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
+                {authorizationStatus === AuthorizationStatus.Auth ?
+                  <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
+                  : null}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import {useState} from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import {Film} from '../../types/film';
-import { FilmReview } from '../../types/review';
+import { Reviews } from '../../types/review';
 import { MoviePageState } from '../../const';
 import FilmDetailsList from '../../components/film-details/film-details';
 import FilmReviewsList from '../../components/film-reviews/film-reviews';
@@ -10,7 +10,7 @@ import FilmOverviewList from '../../components/film-overview/film-overview';
 
 type FilmTabsProps = {
   film: Film | undefined;
-  filmReview: FilmReview | undefined;
+  filmReview: Reviews | undefined;
 }
 
 const moviePageTabs = Object.values(MoviePageState);

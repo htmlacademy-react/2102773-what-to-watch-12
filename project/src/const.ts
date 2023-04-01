@@ -20,16 +20,17 @@ export enum MoviePageState {
   Reviews = 'Reviews'
 }
 
-export const SIMILAR_FILMS_COUNT = 4;
+export const SIMILAR_FILMS_COUNT = 5;
 export const DELAY = 1000;
 export const DEFAULT_FILTER = 'All genres';
 export const MOVIE_CARDS_COUNT = 8;
 
 export enum APIRoute {
-  Films = '/films',
+  Films = '/films/',
   Promo = '/promo',
   Favorite = '/favorite',
-  Comments = '/comments',
+  Comments = '/comments/',
   Login = '/login',
   Logout = '/logout',
+  Similar = '/similar'
 }
