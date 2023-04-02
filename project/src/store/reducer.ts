@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus, setGenre} from './action';
+import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus, setGenre, setReviewSendingStatus} from './action';
 import {AuthorizationStatus, DEFAULT_FILTER} from '../const';
 import { Film } from '../types/film';
 import { Reviews } from '../types/review';
@@ -13,6 +13,7 @@ type InitialState = {
   comments: Reviews;
   similarFilms: Film[];
   isFilmLoadingError: boolean;
+  isReviewDataSending: boolean;
 }
 
 const initialState: InitialState = {
@@ -23,7 +24,8 @@ const initialState: InitialState = {
   similarFilms: [],
   isFilmLoadingError: false,
   film: undefined,
-  comments: []
+  comments: [],
+  isReviewDataSending: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -52,6 +54,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setFilmLoadingError, (state, action) => {
       state.isFilmLoadingError = action.payload;
+    })
+    .addCase(setReviewSendingStatus, (state, action) => {
+      state.isReviewDataSending = action.payload;
     });
 });
 

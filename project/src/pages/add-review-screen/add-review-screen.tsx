@@ -2,16 +2,11 @@ import {Helmet} from 'react-helmet-async';
 import Avatar from '../../components/avatar/avatar';
 import Logo from '../../components/logo/logo';
 import { Link, useParams } from 'react-router-dom';
-//import {Film} from '../../types/film';
 import AddReviewForm from '../../components/add-review-form/add-review-form';
 import {AppRoute} from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-
-// type AddReviewProps = {
-//   films: Film[];
-// }
 
 function AddReview(): JSX.Element {
 

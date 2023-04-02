@@ -25,8 +25,9 @@ function App(props: AppScreenProps): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isFilmsDataLoading = useAppSelector((state) => state.isFilmsDataLoading);
   const isFilmLoadingError = useAppSelector((state) => state.isFilmLoadingError);
+  const isReviewDataSending = useAppSelector((state) => state.isReviewDataSending);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsDataLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || isFilmsDataLoading || isReviewDataSending) {
     return (
       <LoadingScreen/>
     );

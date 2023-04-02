@@ -6,7 +6,7 @@ import { AuthData } from '../types/auth-data';
 import { Film } from '../types/film';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus } from './action';
+import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus, setReviewSendingStatus } from './action';
 import { AddReview, Reviews } from '../types/review';
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
@@ -112,7 +112,9 @@ export const addReviewAction = createAsyncThunk<void, AddReview, {
   extra: AxiosInstance;
 }>(
   'user/AddReview',
-  async ({comment, rating, filmId}, {extra: api}) => {
+  async ({comment, rating, filmId}, {dispatch, extra: api}) => {
+    dispatch(setReviewSendingStatus(true));
     await api.post<AddReview>(`${APIRoute.Comments}${filmId}`, {comment, rating});
+    dispatch(setReviewSendingStatus(false));
   },
 );

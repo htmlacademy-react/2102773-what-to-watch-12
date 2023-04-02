@@ -11,3 +11,4 @@ export const loadFilmById = createAction<Film | undefined>('data/loadFilmById');
 export const loadCommentsById = createAction<Reviews>('data/loadCommentsById');
 export const loadSimilarFilms = createAction<Film[]>('data/loadSimilarFilms');
 export const setFilmLoadingError = createAction<boolean>('data/setFilmLoadingError');
+export const setReviewSendingStatus = createAction<boolean>('data/setReviewSendingStatus');
