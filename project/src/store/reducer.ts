@@ -1,31 +1,45 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus, setGenre, setReviewSendingStatus} from './action';
+import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setGenre} from './action';
 import {AuthorizationStatus, DEFAULT_FILTER} from '../const';
 import { Film } from '../types/film';
 import { Reviews } from '../types/review';
 
 type InitialState = {
   genre: string;
-  filmsList: Film[];
-  isFilmsDataLoading: boolean;
+  filmsList: {
+    data: Film[];
+    isLoading: boolean;
+  };
   authorizationStatus: AuthorizationStatus;
-  film: Film | undefined;
-  comments: Reviews;
+  film: {
+    data: Film | null;
+    isError: boolean;
+    isLoading: boolean;
+  };
+  comments: {
+    data: Reviews;
+    isSending: boolean;
+  };
   similarFilms: Film[];
-  isFilmLoadingError: boolean;
-  isReviewDataSending: boolean;
 }
 
 const initialState: InitialState = {
   genre: DEFAULT_FILTER,
-  filmsList: [],
-  isFilmsDataLoading: false,
+  filmsList: {
+    data: [],
+    isLoading: false,
+  },
   authorizationStatus: AuthorizationStatus.Unknown,
   similarFilms: [],
-  isFilmLoadingError: false,
-  film: undefined,
-  comments: [],
-  isReviewDataSending: false,
+  film: {
+    data: null,
+    isError: false,
+    isLoading: false,
+  },
+  comments: {
+    data: [],
+    isSending: false,
+  }
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -35,28 +49,23 @@ const reducer = createReducer(initialState, (builder) => {
       state.genre = genre;
     })
     .addCase(loadFilms, (state, action) => {
-      state.filmsList = action.payload;
-    })
-    .addCase(setFilmsDataLoadingStatus, (state, action) => {
-      state.isFilmsDataLoading = action.payload;
+      state.filmsList.data = action.payload.data ?? [];
+      state.filmsList.isLoading = action.payload.isLoading ?? false;
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(loadFilmById, (state, action) => {
-      state.film = action.payload;
+      state.film.data = action.payload.data ?? null;
+      state.film.isError = action.payload.isError ?? false;
+      state.film.isLoading = action.payload.isLoading ?? false;
     })
     .addCase(loadCommentsById, (state, action) => {
-      state.comments = action.payload;
+      state.comments.data = action.payload.data ?? [];
+      state.comments.isSending = action.payload.isSending ?? false;
     })
     .addCase(loadSimilarFilms, (state, action) => {
       state.similarFilms = action.payload;
-    })
-    .addCase(setFilmLoadingError, (state, action) => {
-      state.isFilmLoadingError = action.payload;
-    })
-    .addCase(setReviewSendingStatus, (state, action) => {
-      state.isReviewDataSending = action.payload;
     });
 });
 

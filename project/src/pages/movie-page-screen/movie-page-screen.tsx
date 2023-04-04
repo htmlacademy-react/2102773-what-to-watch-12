@@ -8,7 +8,8 @@ import FilmTabs from '../../components/film-tabs/film-tabs';
 import MovieCard from '../../components/movie-card/movie-card';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction } from '../../store/api-actions';
-import { loadFilmById } from '../../store/action';
+import { authorizationStatusSelector, commentsSelector, movieSelector, similarFilmsSelector } from '../../store/selectors';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 type MoviePageProps = {
   films: Film[];
@@ -18,55 +19,49 @@ function MoviePage(props: MoviePageProps): JSX.Element {
 
   const params = useParams();
   const navigate = useNavigate();
-  const isFilmLoadingError = useAppSelector((state) => state.isFilmLoadingError);
   const dispatch = useAppDispatch();
+  const movieInfo = useAppSelector(movieSelector);
+  const filmReviews = useAppSelector(commentsSelector);
+  const similarFilms = useAppSelector(similarFilmsSelector);
+  const authorizationStatus = useAppSelector(authorizationStatusSelector);
 
   useEffect(() => {
-
-    dispatch(fetchFilmByIdAction(String(params.id)));
-    dispatch(fetchCommentsByIdAction(String(params.id)));
-    dispatch(fetchSimilarByIdAction(String(params.id)));
-
-    return () => {
-      dispatch(loadFilmById(undefined));
-    };
-
-  }, [dispatch, isFilmLoadingError, navigate, params.id]);
-
-  const movieInfo = useAppSelector((state) => state.film);
-  const filmReview = useAppSelector((state) => state.comments);
-  const similarFilms = useAppSelector((state) => state.similarFilms);
+    if (!movieInfo.isError) {
+      dispatch(fetchFilmByIdAction(String(params.id)));
+      dispatch(fetchCommentsByIdAction(String(params.id)));
+      dispatch(fetchSimilarByIdAction(String(params.id)));
+    }
+  }, [dispatch, movieInfo.isError, params.id]);
 
   // исправить
-
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
-
   //
-
   const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  if (movieInfo.data === null) {
+    return <LoadingScreen/>;
+  }
 
   return (
     <>
       <section className="film-card film-card--full">
         <div className="film-card__hero">
           <div className="film-card__bg">
-            <img src={movieInfo?.backgroundImage} alt={movieInfo?.name} />
+            <img src={movieInfo.data.backgroundImage} alt={movieInfo.data.name} />
           </div>
 
           <h1 className="visually-hidden">WTW</h1>
           <Header/>
           <div className="film-card__wrap">
             <div className="film-card__desc">
-              <h2 className="film-card__title">{movieInfo?.name}</h2>
+              <h2 className="film-card__title">{movieInfo.data.name}</h2>
               <p className="film-card__meta">
-                <span className="film-card__genre">{movieInfo?.genre}</span>
-                <span className="film-card__year">{movieInfo?.released}</span>
+                <span className="film-card__genre">{movieInfo.data.genre}</span>
+                <span className="film-card__year">{movieInfo.data.released}</span>
               </p>
 
               <div className="film-card__buttons">
-                <button className="btn btn--play film-card__button" type="button" onClick={() => navigate(`/player/${String(movieInfo?.id)}`)}>
+                <button className="btn btn--play film-card__button" type="button" onClick={() => navigate(`/player/${String(movieInfo.data?.id)}`)}>
                   <svg viewBox="0 0 19 19" width="19" height="19">
                     <use xlinkHref="#play-s"></use>
                   </svg>
@@ -90,9 +85,9 @@ function MoviePage(props: MoviePageProps): JSX.Element {
         <div className="film-card__wrap film-card__translate-top">
           <div className="film-card__info">
             <div className="film-card__poster film-card__poster--big">
-              <img src={movieInfo?.posterImage} alt={movieInfo?.name} width="218" height="327" />
+              <img src={movieInfo.data.posterImage} alt={movieInfo.data.name} width="218" height="327" />
             </div>
-            <FilmTabs film={movieInfo} filmReview={filmReview}/>
+            <FilmTabs film={movieInfo.data} filmReviews={filmReviews.data}/>
           </div>
         </div>
       </section>
@@ -103,7 +98,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
 
           <div className="catalog__films-list">
             {similarFilms.length > 1 ? similarFilms.slice(0, SIMILAR_FILMS_COUNT).map((film) => (
-              movieInfo?.id !== film.id &&
+              movieInfo.data?.id !== film.id &&
                 <article className="small-film-card catalog__films-card" key={film.id}>
                   <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>
                 </article>

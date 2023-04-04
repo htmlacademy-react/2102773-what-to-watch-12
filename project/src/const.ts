@@ -34,3 +34,8 @@ export enum APIRoute {
   Logout = '/logout',
   Similar = '/similar'
 }
+
+export enum ReviewLength {
+  Min = 50,
+  Max = 400
+}

@@ -6,7 +6,7 @@ import { AuthData } from '../types/auth-data';
 import { Film } from '../types/film';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setFilmLoadingError, setFilmsDataLoadingStatus, setReviewSendingStatus } from './action';
+import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization } from './action';
 import { AddReview, Reviews } from '../types/review';
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
@@ -16,10 +16,10 @@ export const fetchFilmsAction = createAsyncThunk<void, undefined, {
 }>(
   'data/fetchFilms',
   async (_arg, {dispatch, extra: api}) => {
-    dispatch(setFilmsDataLoadingStatus(true));
+    dispatch(loadFilms({isLoading: true}));
     const {data} = await api.get<Film[]>(APIRoute.Films);
-    dispatch(setFilmsDataLoadingStatus(false));
-    dispatch(loadFilms(data));
+    dispatch(loadFilms({isLoading: false}));
+    dispatch(loadFilms({data}));
   },
 );
 
@@ -31,10 +31,13 @@ export const fetchFilmByIdAction = createAsyncThunk<void, string, {
   'data/fetchFilmById',
   async (filmId, {dispatch, extra: api}) => {
     try {
+      dispatch(loadFilmById({isError: false}));
+      dispatch(loadFilmById({isLoading: true}));
       const {data} = await api.get<Film>(`${APIRoute.Films}${filmId}`);
-      dispatch(loadFilmById(data));
+      dispatch(loadFilmById({isLoading: false}));
+      dispatch(loadFilmById({data}));
     } catch {
-      dispatch(setFilmLoadingError(true));
+      dispatch(loadFilmById({isError: true}));
     }
   },
 );
@@ -47,7 +50,7 @@ export const fetchCommentsByIdAction = createAsyncThunk<void, string, {
   'data/fetchCommentsById',
   async (filmId, {dispatch, extra: api}) => {
     const {data} = await api.get<Reviews>(`${APIRoute.Comments}${filmId}`);
-    dispatch(loadCommentsById(data));
+    dispatch(loadCommentsById({data}));
   },
 );
 
@@ -62,7 +65,6 @@ export const fetchSimilarByIdAction = createAsyncThunk<void, string, {
     dispatch(loadSimilarFilms(data));
   },
 );
-
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -106,15 +108,15 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   },
 );
 
-export const addReviewAction = createAsyncThunk<void, AddReview, {
+export const sendReviewAction = createAsyncThunk<void, AddReview, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'user/AddReview',
   async ({comment, rating, filmId}, {dispatch, extra: api}) => {
-    dispatch(setReviewSendingStatus(true));
+    dispatch(loadCommentsById({isSending: true}));
     await api.post<AddReview>(`${APIRoute.Comments}${filmId}`, {comment, rating});
-    dispatch(setReviewSendingStatus(false));
+    dispatch(loadCommentsById({isSending: false}));
   },
 );

@@ -3,6 +3,10 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import {Film} from '../../types/film';
 import GenresList from '../../components/genres-list/genres-list';
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { loadFilmById } from '../../store/action';
+import { movieSelector } from '../../store/selectors';
 
 type MainScreenProps = {
   filmCardTitle: string;
@@ -14,6 +18,15 @@ type MainScreenProps = {
 function MainScreen(props: MainScreenProps): JSX.Element {
 
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
+
+  const dispatch = useAppDispatch();
+  const movieInfo = useAppSelector(movieSelector);
+
+  useEffect(() => {
+    if (movieInfo.isError) {
+      dispatch(loadFilmById({isError: false}));
+    }
+  }, [dispatch, movieInfo.isError]);
 
   return (
     <>

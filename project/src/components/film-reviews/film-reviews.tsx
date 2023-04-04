@@ -2,13 +2,13 @@ import { Reviews } from '../../types/review';
 import dayjs from 'dayjs';
 
 type FilmReviewsProps = {
-  filmReview: Reviews | undefined;
+  filmReviews: Reviews;
 }
 
 function FilmReviewsList(props: FilmReviewsProps): JSX.Element {
 
-  const oneСolumnReview = props.filmReview?.slice(0, (props.filmReview?.length / 2) + 1);
-  const twoColumnReviev = props.filmReview?.slice((props.filmReview?.length / 2) + 1, props.filmReview?.length);
+  const oneСolumnReview = props.filmReviews.slice(0, (props.filmReviews.length / 2) + 1);
+  const twoColumnReviev = props.filmReviews.slice((props.filmReviews.length / 2) + 1, props.filmReviews.length);
 
   return (
     <div className="film-card__reviews film-card__row">

@@ -9,8 +9,8 @@ import FilmReviewsList from '../../components/film-reviews/film-reviews';
 import FilmOverviewList from '../../components/film-overview/film-overview';
 
 type FilmTabsProps = {
-  film: Film | undefined;
-  filmReview: Reviews | undefined;
+  film: Film | null;
+  filmReviews: Reviews;
 }
 
 const moviePageTabs = Object.values(MoviePageState);
@@ -22,7 +22,7 @@ function FilmTabs(props: FilmTabsProps): JSX.Element {
       case MoviePageState.Overview:
         return <FilmOverviewList film={props.film}/>;
       case MoviePageState.Reviews:
-        return <FilmReviewsList filmReview={props.filmReview}/>;
+        return <FilmReviewsList filmReviews={props.filmReviews}/>;
       case MoviePageState.Details:
         return <FilmDetailsList film={props.film}/>;
     }

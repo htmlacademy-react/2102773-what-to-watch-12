@@ -1,7 +1,7 @@
 import { Film } from '../../types/film';
 
 type FilmDetailsProps = {
-  film: Film | undefined;
+  film: Film | null;
 }
 
 function getTimeFromMins(mins: number) {

@@ -7,17 +7,27 @@ import {AppRoute} from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
 import { useEffect } from 'react';
+import { movieSelector } from '../../store/selectors';
+import PageNotFound from '../../components/page-not-found/page-not-found';
+import LoadingScreen from '../loading-screen/loading-screen';
 
 function AddReview(): JSX.Element {
 
   const dispatch = useAppDispatch();
   const params = useParams();
+  const movieInfo = useAppSelector(movieSelector);
 
   useEffect(() => {
-    dispatch(fetchFilmByIdAction(String(params.id)));
-  }, [dispatch, params.id]);
+    !movieInfo.isError && dispatch(fetchFilmByIdAction(String(params.id)));
+  }, [dispatch, movieInfo.isError, params.id]);
 
-  const movieInfo = useAppSelector((state) => state.film);
+  if (movieInfo.isError) {
+    return <PageNotFound/>;
+  }
+
+  if (movieInfo.data === null) {
+    return <LoadingScreen/>;
+  }
 
   return (
     <section className="film-card film-card--full">
@@ -27,7 +37,7 @@ function AddReview(): JSX.Element {
 
       <div className="film-card__header">
         <div className="film-card__bg">
-          <img src={movieInfo?.backgroundImage} alt={movieInfo?.name} />
+          <img src={movieInfo.data.backgroundImage} alt={movieInfo.data.name} />
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -39,7 +49,7 @@ function AddReview(): JSX.Element {
           <nav className="breadcrumbs">
             <ul className="breadcrumbs__list">
               <li className="breadcrumbs__item">
-                <Link className="breadcrumbs__link" to={`${AppRoute.Films}${String(movieInfo?.id)}`}>{movieInfo?.name}</Link>
+                <Link className="breadcrumbs__link" to={`${AppRoute.Films}${String(movieInfo.data.id)}`}>{movieInfo.data.name}</Link>
               </li>
               <li className="breadcrumbs__item">
                 <a className="breadcrumbs__link">Add review</a>
@@ -51,12 +61,12 @@ function AddReview(): JSX.Element {
         </header>
 
         <div className="film-card__poster film-card__poster--small">
-          <img src={movieInfo?.posterImage} alt={movieInfo?.name} width="218" height="327" />
+          <img src={movieInfo.data.posterImage} alt={movieInfo.data.name} width="218" height="327" />
         </div>
       </div>
       <div className="rating">
         <div className="add-review">
-          <AddReviewForm filmId={String(movieInfo?.id)}/>
+          <AddReviewForm filmId={String(movieInfo.data.id)}/>
         </div>
       </div>
 

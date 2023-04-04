@@ -1,32 +1,33 @@
-import { useRef, FormEvent } from 'react';
+import { FormEvent, useState, ChangeEvent } from 'react';
 import {Helmet} from 'react-helmet-async';
 import Footer from '../../components/footer/footer';
 import Logo from '../../components/logo/logo';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { AuthData } from '../../types/auth-data';
 import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 function SignIn(): JSX.Element {
 
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const redirect = useNavigate();
 
-  const onSubmit = (authData: AuthData) => {
-    dispatch(loginAction(authData));
+  const [authData, setAuthData] = useState({
+    login: '',
+    password: '',
+  });
+
+  const onChange = ({target}: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>) => {
+    setAuthData({...authData, [target.name]: target.value});
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-
-    if (loginRef.current !== null && passwordRef.current !== null) {
-      onSubmit({
-        login: loginRef.current.value,
-        password: passwordRef.current.value,
-      });
+    if (authData !== null) {
+      dispatch(loginAction({
+        login: authData.login,
+        password: authData.password,
+      }));
       redirect(AppRoute.Main);
     }
   };
@@ -47,20 +48,20 @@ function SignIn(): JSX.Element {
           <div className="sign-in__fields">
             <div className="sign-in__field">
               <input
-                ref={loginRef}
                 className="sign-in__input"
                 type="email" placeholder="Email address"
-                name="user-email" id="user-email"
+                name="login" id="user-email"
+                onChange={onChange}
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
             </div>
             <div className="sign-in__field">
               <input
-                ref={passwordRef}
                 className="sign-in__input"
                 type="password" placeholder="Password"
-                name="user-password"
+                name="password"
                 id="user-password"
+                onChange={onChange}
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-password">Password</label>
             </div>
