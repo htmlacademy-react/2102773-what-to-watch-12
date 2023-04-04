@@ -2,7 +2,6 @@ import { PropsWithChildren, useState } from 'react';
 import {Film} from '../../types/film';
 import MovieCard from '../movie-card/movie-card';
 
-
 type FilmsListProps = PropsWithChildren<{
   films: Film[];
 }>
