@@ -4,13 +4,10 @@ import Footer from '../../components/footer/footer';
 import Logo from '../../components/logo/logo';
 import { useAppDispatch } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
-import { useNavigate } from 'react-router-dom';
-import { AppRoute } from '../../const';
 
 function SignIn(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const redirect = useNavigate();
 
   const [authData, setAuthData] = useState({
     login: '',
@@ -28,7 +25,6 @@ function SignIn(): JSX.Element {
         login: authData.login,
         password: authData.password,
       }));
-      redirect(AppRoute.Main);
     }
   };
 

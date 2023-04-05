@@ -1,12 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute, AuthorizationStatus} from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus} from '../const';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { Film } from '../types/film';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization } from './action';
+import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, redirectToRoute, requireAuthorization } from './action';
 import { AddReview, Reviews } from '../types/review';
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
@@ -92,6 +92,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     const {data: {token, avatarUrl}} = await api.post<UserData>(APIRoute.Login, {email, password});
     saveToken(token, avatarUrl);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Main));
   },
 );
 
@@ -118,5 +119,6 @@ export const sendReviewAction = createAsyncThunk<void, AddReview, {
     dispatch(loadCommentsById({isSending: true}));
     await api.post<AddReview>(`${APIRoute.Comments}${filmId}`, {comment, rating});
     dispatch(loadCommentsById({isSending: false}));
+    dispatch(redirectToRoute(`${AppRoute.Films}${filmId}`));
   },
 );

@@ -1,4 +1,4 @@
-import {Route, BrowserRouter, Routes} from 'react-router-dom';
+import {Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import MainScreen from '../../pages/main-screen/main-screen';
@@ -12,7 +12,9 @@ import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import { commentsSelector, filmsSelector, movieSelector } from '../../store/selectors';
+import { filmsSelector, movieSelector } from '../../store/selectors';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 type AppScreenProps = {
   filmCardTitle: string;
@@ -25,9 +27,8 @@ function App(props: AppScreenProps): JSX.Element {
   const filmsList = useAppSelector(filmsSelector);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const film = useAppSelector(movieSelector);
-  const comments = useAppSelector(commentsSelector);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || filmsList.isLoading || comments.isSending) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || filmsList.isLoading) {
     return (
       <LoadingScreen/>
     );
@@ -35,7 +36,7 @@ function App(props: AppScreenProps): JSX.Element {
 
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <ScrollToTop />
         <Routes>
           <Route
@@ -90,7 +91,7 @@ function App(props: AppScreenProps): JSX.Element {
             element={<PageNotFound/>}
           />
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }
