@@ -1,7 +1,7 @@
-import * as React from 'react';
+//import * as React from 'react';
 import Loader from 'react-ts-loaders';
 
-function MyLoader () {
+function DefaultLoader () {
   return (
     <Loader
       type="dotspinner"
@@ -10,4 +10,4 @@ function MyLoader () {
     />);
 }
 
-export default MyLoader;
+export default DefaultLoader;

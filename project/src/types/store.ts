@@ -18,5 +18,8 @@ export type Store = {
     data: Reviews;
     isSending: boolean;
   };
-  similarFilms: Film[];
+  similarFilms: {
+    data: Film[];
+    isLoading: boolean;
+  };
 }

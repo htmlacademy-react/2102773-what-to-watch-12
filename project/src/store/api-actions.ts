@@ -1,13 +1,15 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute, AppRoute, AuthorizationStatus} from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus, REDIRECT_ACTION_NAME} from '../const';
 import { dropToken, saveToken } from '../services/token';
 import { AuthData } from '../types/auth-data';
 import { Film } from '../types/film';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, redirectToRoute, requireAuthorization } from './action';
+import { loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization } from './action';
 import { AddReview, Reviews } from '../types/review';
+
+const redirectToRoute = createAction<string>(REDIRECT_ACTION_NAME);
 
 export const fetchFilmsAction = createAsyncThunk<void, undefined, {
   dispatch: AppDispatch;
@@ -61,8 +63,10 @@ export const fetchSimilarByIdAction = createAsyncThunk<void, string, {
 }>(
   'data/fetchSimilarById',
   async (filmId, {dispatch, extra: api}) => {
+    dispatch(loadSimilarFilms({isLoading: true}));
     const {data} = await api.get<Film[]>(`${APIRoute.Films}${filmId}${APIRoute.Similar}`);
-    dispatch(loadSimilarFilms(data));
+    dispatch(loadSimilarFilms({isLoading: false}));
+    dispatch(loadSimilarFilms({data}));
   },
 );
 

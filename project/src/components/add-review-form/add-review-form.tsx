@@ -2,8 +2,8 @@ import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { ReviewLength } from '../../const';
-import { commentsSelector } from '../../store/selectors';
-import MyLoader from '../loader/loader';
+import { reviewsSelector } from '../../store/selectors';
+import DefaultLoader from '../loader/loader';
 
 type AddReviewFormProps = {
   filmId: string;
@@ -15,7 +15,8 @@ const ratingStars = [...Array(starCount).keys()];
 function AddReviewForm(props: AddReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const sendingStatus = useAppSelector(commentsSelector);
+  //const sendingStatus = useAppSelector(commentsSelector);
+  const { isSending } = useAppSelector(reviewsSelector);
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -39,8 +40,8 @@ function AddReviewForm(props: AddReviewFormProps): JSX.Element {
     }
   };
 
-  if (sendingStatus.isSending) {
-    return <MyLoader/>;
+  if (isSending) {
+    return <DefaultLoader/>;
   }
 
   return (

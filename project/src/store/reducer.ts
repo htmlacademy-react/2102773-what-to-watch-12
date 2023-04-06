@@ -10,7 +10,10 @@ const initialState: Store = {
     isLoading: false,
   },
   authorizationStatus: AuthorizationStatus.Unknown,
-  similarFilms: [],
+  similarFilms: {
+    data: [],
+    isLoading: false,
+  },
   film: {
     data: null,
     isError: false,
@@ -45,7 +48,8 @@ const reducer = createReducer(initialState, (builder) => {
       state.comments.isSending = action.payload.isSending ?? false;
     })
     .addCase(loadSimilarFilms, (state, action) => {
-      state.similarFilms = action.payload;
+      state.similarFilms.data = action.payload.data ?? [];
+      state.similarFilms.isLoading = action.payload.isLoading ?? false;
     });
 });
 

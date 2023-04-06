@@ -39,3 +39,5 @@ export enum ReviewLength {
   Min = 50,
   Max = 400
 }
+
+export const REDIRECT_ACTION_NAME = 'main/redirectToRoute';
