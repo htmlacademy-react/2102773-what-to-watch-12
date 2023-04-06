@@ -1,15 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus, SIMILAR_FILMS_COUNT } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import {Film} from '../../types/film';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
-import MovieCard from '../../components/movie-card/movie-card';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction } from '../../store/api-actions';
-import { authorizationStatusSelector, commentsSelector, movieSelector, similarFilmsSelector } from '../../store/selectors';
+import { authorizationStatusSelector, reviewsSelector, movieSelector, similarFilmsSelector } from '../../store/selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
+import DefaultLoader from '../../components/loader/loader';
+import SimilarFilms from '../../components/similar-films/similar-films';
 
 type MoviePageProps = {
   films: Film[];
@@ -21,7 +22,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const movieInfo = useAppSelector(movieSelector);
-  const filmReviews = useAppSelector(commentsSelector);
+  const filmReviews = useAppSelector(reviewsSelector);
   const similarFilms = useAppSelector(similarFilmsSelector);
   const authorizationStatus = useAppSelector(authorizationStatusSelector);
 
@@ -36,7 +37,6 @@ function MoviePage(props: MoviePageProps): JSX.Element {
   // исправить
   const favoriteFilms = props.films.filter((film) => film.isFavorite);
   //
-  const [activeCardId, setActiveCardId] = useState<number | null>(null);
 
   if (movieInfo.data === null) {
     return <LoadingScreen/>;
@@ -87,7 +87,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
             <div className="film-card__poster film-card__poster--big">
               <img src={movieInfo.data.posterImage} alt={movieInfo.data.name} width="218" height="327" />
             </div>
-            <FilmTabs film={movieInfo.data} filmReviews={filmReviews.data}/>
+            {movieInfo.isLoading ? <DefaultLoader/> : <FilmTabs film={movieInfo.data} filmReviews={filmReviews.data}/>}
           </div>
         </div>
       </section>
@@ -97,13 +97,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
           <h2 className="catalog__title">More like this</h2>
 
           <div className="catalog__films-list">
-            {similarFilms.length > 1 ? similarFilms.slice(0, SIMILAR_FILMS_COUNT).map((film) => (
-              movieInfo.data?.id !== film.id &&
-                <article className="small-film-card catalog__films-card" key={film.id}>
-                  <MovieCard film={film} isActive={film.id === activeCardId} onMouseLeave={() => setActiveCardId(null)} onMouseOver={() => setActiveCardId(film.id)}/>
-                </article>
-            )
-            ) : 'No similar films'}
+            {similarFilms.isLoading ? <DefaultLoader/> : <SimilarFilms similarFilms={similarFilms} movieInfo={movieInfo}/>}
           </div>
         </section>
 

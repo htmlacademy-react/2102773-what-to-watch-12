@@ -1,36 +1,19 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setGenre} from './action';
 import {AuthorizationStatus, DEFAULT_FILTER} from '../const';
-import { Film } from '../types/film';
-import { Reviews } from '../types/review';
+import { Store } from '../types/store';
 
-type InitialState = {
-  genre: string;
-  filmsList: {
-    data: Film[];
-    isLoading: boolean;
-  };
-  authorizationStatus: AuthorizationStatus;
-  film: {
-    data: Film | null;
-    isError: boolean;
-    isLoading: boolean;
-  };
-  comments: {
-    data: Reviews;
-    isSending: boolean;
-  };
-  similarFilms: Film[];
-}
-
-const initialState: InitialState = {
+const initialState: Store = {
   genre: DEFAULT_FILTER,
   filmsList: {
     data: [],
     isLoading: false,
   },
   authorizationStatus: AuthorizationStatus.Unknown,
-  similarFilms: [],
+  similarFilms: {
+    data: [],
+    isLoading: false,
+  },
   film: {
     data: null,
     isError: false,
@@ -65,7 +48,8 @@ const reducer = createReducer(initialState, (builder) => {
       state.comments.isSending = action.payload.isSending ?? false;
     })
     .addCase(loadSimilarFilms, (state, action) => {
-      state.similarFilms = action.payload;
+      state.similarFilms.data = action.payload.data ?? [];
+      state.similarFilms.isLoading = action.payload.isLoading ?? false;
     });
 });
 

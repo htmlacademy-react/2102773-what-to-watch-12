@@ -1,4 +1,4 @@
-import MyLoader from '../../components/loader/loader';
+import DefaultLoader from '../../components/loader/loader';
 
 function LoadingScreen(): JSX.Element {
   return (
@@ -14,7 +14,7 @@ function LoadingScreen(): JSX.Element {
       </header>
       <section className="catalog">
         <h1>
-          <MyLoader/>
+          <DefaultLoader/>
         </h1>
       </section>
       <footer className="page-footer">

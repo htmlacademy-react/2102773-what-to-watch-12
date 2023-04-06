@@ -1,8 +1,9 @@
 import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendReviewAction } from '../../store/api-actions';
-import { useNavigate } from 'react-router-dom';
-import { AppRoute, ReviewLength } from '../../const';
+import { ReviewLength } from '../../const';
+import { reviewsSelector } from '../../store/selectors';
+import DefaultLoader from '../loader/loader';
 
 type AddReviewFormProps = {
   filmId: string;
@@ -14,7 +15,8 @@ const ratingStars = [...Array(starCount).keys()];
 function AddReviewForm(props: AddReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const redirect = useNavigate();
+  //const sendingStatus = useAppSelector(commentsSelector);
+  const { isSending } = useAppSelector(reviewsSelector);
 
   const [formData, setFormData] = useState({
     rating: 0,
@@ -35,9 +37,12 @@ function AddReviewForm(props: AddReviewFormProps): JSX.Element {
         comment: formData.comment,
         filmId: props.filmId
       }));
-      redirect(`${AppRoute.Films}${String(props.filmId)}`);
     }
   };
+
+  if (isSending) {
+    return <DefaultLoader/>;
+  }
 
   return (
     <form action="#" className="add-review__form" onSubmit={formSubmitHandler}>
