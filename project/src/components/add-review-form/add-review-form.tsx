@@ -15,7 +15,6 @@ const ratingStars = [...Array(starCount).keys()];
 function AddReviewForm(props: AddReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
-  //const sendingStatus = useAppSelector(commentsSelector);
   const { isSending } = useAppSelector(reviewsSelector);
 
   const [formData, setFormData] = useState({
