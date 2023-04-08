@@ -28,7 +28,7 @@ export const MOVIE_CARDS_COUNT = 8;
 export enum APIRoute {
   Films = '/films/',
   Promo = '/promo',
-  Favorite = '/favorite',
+  Favorite = '/favorite/',
   Comments = '/comments/',
   Login = '/login',
   Logout = '/logout',

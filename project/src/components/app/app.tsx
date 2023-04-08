@@ -12,23 +12,19 @@ import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import { filmsSelector, movieSelector } from '../../store/selectors';
+import { favoriteFilmsSelector, filmsSelector, movieSelector, promoFilmSelector } from '../../store/selectors';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
 
-type AppScreenProps = {
-  filmCardTitle: string;
-  filmCardGenre: string;
-  filmCardYear: number;
-}
-
-function App(props: AppScreenProps): JSX.Element {
+function App(): JSX.Element {
 
   const filmsList = useAppSelector(filmsSelector);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const film = useAppSelector(movieSelector);
+  const promoFilm = useAppSelector(promoFilmSelector);
+  const favoriteFilms = useAppSelector(favoriteFilmsSelector);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || filmsList.isLoading) {
+  if (authorizationStatus === AuthorizationStatus.Unknown || filmsList.isLoading || promoFilm.isLoading) {
     return (
       <LoadingScreen/>
     );
@@ -43,9 +39,6 @@ function App(props: AppScreenProps): JSX.Element {
             path={AppRoute.Main}
             element={
               <MainScreen
-                filmCardTitle={props.filmCardTitle}
-                filmCardGenre={props.filmCardGenre}
-                filmCardYear={props.filmCardYear}
                 films={filmsList.data}
               />
             }
@@ -56,13 +49,13 @@ function App(props: AppScreenProps): JSX.Element {
               <PrivateRoute
                 authorizationStatus={authorizationStatus}
               >
-                <MoviesList films={filmsList.data} />
+                <MoviesList favoriteFilms={favoriteFilms.data} />
               </PrivateRoute>
             }
           />
           <Route path={AppRoute.Films}>
             <Route path={AppRoute.Film}>
-              <Route index element={!film.isError ? <MoviePage films={filmsList.data}/> : <PageNotFound/>}/>
+              <Route index element={!film.isError ? <MoviePage favoriteFilms={favoriteFilms.data}/> : <PageNotFound/>}/>
 
               <Route
                 path={AppRoute.AddReview}
@@ -80,7 +73,7 @@ function App(props: AppScreenProps): JSX.Element {
 
           <Route
             path={AppRoute.Player}
-            element={<MoviePlayer films={filmsList.data}/>}
+            element={<MoviePlayer film={film.data}/>}
           />
           <Route
             path={AppRoute.SignIn}

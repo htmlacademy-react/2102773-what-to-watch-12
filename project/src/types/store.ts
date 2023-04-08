@@ -22,4 +22,12 @@ export type Store = {
     data: Film[];
     isLoading: boolean;
   };
+  promoFilm: {
+    data: Film | null;
+    isLoading: boolean;
+  };
+  favoriteFilmsList: {
+    data: Film[];
+    isLoading: boolean;
+  };
 }

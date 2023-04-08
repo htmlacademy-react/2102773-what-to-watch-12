@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {loadCommentsById, loadFilmById, loadFilms, loadSimilarFilms, requireAuthorization, setGenre} from './action';
+import {loadCommentsById, loadFavoriteFilms, loadFilmById, loadFilms, loadPromoFilm, loadSimilarFilms, requireAuthorization, setGenre} from './action';
 import {AuthorizationStatus, DEFAULT_FILTER} from '../const';
 import { Store } from '../types/store';
 
@@ -22,7 +22,15 @@ const initialState: Store = {
   comments: {
     data: [],
     isSending: false,
-  }
+  },
+  promoFilm: {
+    data: null,
+    isLoading: false,
+  },
+  favoriteFilmsList: {
+    data: [],
+    isLoading: false,
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -50,6 +58,14 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadSimilarFilms, (state, action) => {
       state.similarFilms.data = action.payload.data ?? [];
       state.similarFilms.isLoading = action.payload.isLoading ?? false;
+    })
+    .addCase(loadPromoFilm, (state, action) => {
+      state.promoFilm.data = action.payload.data ?? null;
+      state.promoFilm.isLoading = action.payload.isLoading ?? false;
+    })
+    .addCase(loadFavoriteFilms, (state, action) => {
+      state.favoriteFilmsList.data = action.payload.data ?? [];
+      state.favoriteFilmsList.isLoading = action.payload.isLoading ?? false;
     });
 });
 

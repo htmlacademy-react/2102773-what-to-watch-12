@@ -1,5 +1,5 @@
+import moment from 'moment';
 import { Reviews } from '../../types/review';
-import dayjs from 'dayjs';
 
 type FilmReviewsProps = {
   filmReviews: Reviews;
@@ -20,7 +20,7 @@ function FilmReviewsList(props: FilmReviewsProps): JSX.Element {
 
               <footer className="review__details">
                 <cite className="review__author">{review.user.name}</cite>
-                <time className="review__date" dateTime={review.date}>{dayjs(review.date).format('MMMM DD, YYYY')}</time>
+                <time className="review__date" dateTime={review.date}>{moment(review.date).format('MMMM DD, YYYY')}</time>
               </footer>
             </blockquote>
             <div className="review__rating">{review.rating}</div>
@@ -34,7 +34,7 @@ function FilmReviewsList(props: FilmReviewsProps): JSX.Element {
 
               <footer className="review__details">
                 <cite className="review__author">{review.user.name}</cite>
-                <time className="review__date" dateTime={review.date}>{dayjs(review.date).format('MMMM DD, YYYY')}</time>
+                <time className="review__date" dateTime={review.date}>{moment(review.date).format('MMMM DD, YYYY')}</time>
               </footer>
             </blockquote>
             <div className="review__rating">{review.rating}</div>

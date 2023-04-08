@@ -6,14 +6,15 @@ import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction } from '../../store/api-actions';
+import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction, sendFavoriteStatusAction } from '../../store/api-actions';
 import { authorizationStatusSelector, reviewsSelector, movieSelector, similarFilmsSelector } from '../../store/selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
 import DefaultLoader from '../../components/loader/loader';
 import SimilarFilms from '../../components/similar-films/similar-films';
 
+
 type MoviePageProps = {
-  films: Film[];
+  favoriteFilms: Film[];
 }
 
 function MoviePage(props: MoviePageProps): JSX.Element {
@@ -34,9 +35,14 @@ function MoviePage(props: MoviePageProps): JSX.Element {
     }
   }, [dispatch, movieInfo.isError, params.id]);
 
-  // исправить
-  const favoriteFilms = props.films.filter((film) => film.isFavorite);
-  //
+  const isFavorite = props.favoriteFilms.map((film) => film.id).includes(Number(params.id));
+
+  const buttonClickHandler = () => {
+    dispatch(sendFavoriteStatusAction({
+      status: Number(!isFavorite),
+      filmId: String(movieInfo.data?.id)
+    }));
+  };
 
   if (movieInfo.data === null) {
     return <LoadingScreen/>;
@@ -67,12 +73,12 @@ function MoviePage(props: MoviePageProps): JSX.Element {
                   </svg>
                   <span>Play</span>
                 </button>
-                <button className="btn btn--list film-card__button" type="button">
-                  <svg viewBox="0 0 19 20" width="19" height="20">
-                    <use xlinkHref="#add"></use>
+                <button className="btn btn--list film-card__button" type="button" onClick={buttonClickHandler}>
+                  <svg viewBox={isFavorite ? '0 0 19 19' : '0 0 19 20'} width="19" height={isFavorite ? '19' : '20'}>
+                    <use xlinkHref={isFavorite ? '#in-list' : '#add'}></use>
                   </svg>
                   <span>My list</span>
-                  <span className="film-card__count">{favoriteFilms.length}</span>
+                  <span className="film-card__count">{props.favoriteFilms.length}</span>
                 </button>
                 {authorizationStatus === AuthorizationStatus.Auth ?
                   <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
