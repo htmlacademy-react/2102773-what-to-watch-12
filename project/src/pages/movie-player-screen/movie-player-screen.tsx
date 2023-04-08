@@ -1,9 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import moment from 'moment';
 import { AppRoute } from '../../const';
 import {Film} from '../../types/film';
-import { useEffect, useRef, useState } from 'react';
 import { useElementListener } from '../../hooks/use-element-listener';
-import moment from 'moment';
 import LoadingScreen from '../loading-screen/loading-screen';
 import { useAppDispatch } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
@@ -38,13 +38,12 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
       return;
     }
 
-    if (isPlaying && isLoaded && videoRef.current.played) {
+    if (isPlaying && isLoaded) {
       videoRef.current.muted = true;
       videoRef.current.play();
     }
 
     else {
-      setIsPlaying(videoRef.current.paused);
       videoRef.current.pause();
     }
 
