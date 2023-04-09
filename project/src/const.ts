@@ -41,3 +41,9 @@ export enum ReviewLength {
 }
 
 export const REDIRECT_ACTION_NAME = 'main/redirectToRoute';
+
+export enum NameSpace {
+  Data = 'DATA',
+  Main = 'MAIN',
+  User = 'USER',
+}

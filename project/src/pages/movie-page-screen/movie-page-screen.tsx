@@ -6,11 +6,11 @@ import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction, fetchCommentsByIdAction, fetchSimilarByIdAction } from '../../store/api-actions';
-import { reviewsSelector, movieSelector, similarFilmsSelector } from '../../store/selectors';
 import LoadingScreen from '../loading-screen/loading-screen';
 import DefaultLoader from '../../components/loader/loader';
 import SimilarFilms from '../../components/similar-films/similar-films';
 import MovieInfo from '../../components/movie-info/movie-info';
+import { movieSelector, reviewsSelector, similarFilmsSelector } from '../../store/data/selectors';
 
 
 type MoviePageProps = {

@@ -1,16 +1,17 @@
 import { PropsWithChildren } from 'react';
 import DefaultLoader from '../loader/loader';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { favoriteFilmsSelector, promoFilmSelector } from '../../store/selectors';
 import { useNavigate } from 'react-router-dom';
 import { fetchFilmByIdAction, sendFavoriteStatusAction } from '../../store/api-actions';
+import { promoFilmSelector, favoriteFilmsSelector } from '../../store/data/selectors';
 
 function PromoFilm(props: PropsWithChildren): JSX.Element {
+  const dispatch = useAppDispatch();
 
   const promoFilm = useAppSelector(promoFilmSelector);
   const favoriteFilms = useAppSelector(favoriteFilmsSelector);
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
+
 
   if (promoFilm.data === null) {
     return <DefaultLoader/>;

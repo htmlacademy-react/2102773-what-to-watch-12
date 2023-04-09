@@ -3,8 +3,8 @@ import { AuthorizationStatus, AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendFavoriteStatusAction } from '../../store/api-actions';
 import { Film } from '../../types/film';
-import { authorizationStatusSelector } from '../../store/selectors';
 import { PropsWithChildren } from 'react';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 type MovieInfoProps = PropsWithChildren<{
   favoriteFilms: Film[];
@@ -15,7 +15,7 @@ type MovieInfoProps = PropsWithChildren<{
 function MovieInfo (props: MovieInfoProps): JSX.Element {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const authorizationStatus = useAppSelector(authorizationStatusSelector);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const buttonClickHandler = () => {
     dispatch(sendFavoriteStatusAction({

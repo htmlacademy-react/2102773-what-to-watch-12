@@ -1,6 +1,6 @@
 import {Route, Routes} from 'react-router-dom';
 import {HelmetProvider} from 'react-helmet-async';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute} from '../../const';
 import MainScreen from '../../pages/main-screen/main-screen';
 import AddReview from '../../pages/add-review-screen/add-review-screen';
 import MoviePage from '../../pages/movie-page-screen/movie-page-screen';
@@ -12,19 +12,21 @@ import PrivateRoute from '../private-route/private-route';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import { useAppSelector } from '../../hooks';
 import LoadingScreen from '../../pages/loading-screen/loading-screen';
-import { favoriteFilmsSelector, filmsSelector, movieSelector, promoFilmSelector } from '../../store/selectors';
 import HistoryRouter from '../history-route/history-route';
 import browserHistory from '../../browser-history';
+import { getAuthCheckedStatus, getAuthorizationStatus } from '../../store/user-process/selectors';
+import { filmsSelector, movieSelector, promoFilmSelector, favoriteFilmsSelector } from '../../store/data/selectors';
 
 function App(): JSX.Element {
 
   const filmsList = useAppSelector(filmsSelector);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const isAuthChecked = useAppSelector(getAuthCheckedStatus);
   const film = useAppSelector(movieSelector);
   const promoFilm = useAppSelector(promoFilmSelector);
   const favoriteFilms = useAppSelector(favoriteFilmsSelector);
 
-  if (authorizationStatus === AuthorizationStatus.Unknown || filmsList.isLoading || promoFilm.isLoading) {
+  if (!isAuthChecked || filmsList.isLoading || promoFilm.isLoading) {
     return (
       <LoadingScreen/>
     );
