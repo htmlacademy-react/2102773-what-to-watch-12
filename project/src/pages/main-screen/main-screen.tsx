@@ -7,8 +7,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import PromoFilm from '../../components/promo-film/promo-film';
 import { movieSelector } from '../../store/data/selectors';
-import { data } from '../../store/data/data';
-import { NameSpace } from '../../const';
+import { setFilmInfoError } from '../../store/data/data';
 
 type MainScreenProps = {
   films: Film[];
@@ -16,14 +15,14 @@ type MainScreenProps = {
 
 function MainScreen(props: MainScreenProps): JSX.Element {
 
-  // const dispatch = useAppDispatch();
-  // const movieInfo = useAppSelector(movieSelector);
+  const dispatch = useAppDispatch();
+  const movieInfo = useAppSelector(movieSelector);
 
-  // useEffect(() => {
-  //   if (movieInfo.isError) {
-  //     dispatch(data({isError: false}));
-  //   }
-  // }, [dispatch, movieInfo.isError]);
+  useEffect(() => {
+    if (movieInfo.isError) {
+      dispatch(setFilmInfoError({isError: false}));
+    }
+  }, [dispatch, movieInfo.isError]);
 
   return (
     <>

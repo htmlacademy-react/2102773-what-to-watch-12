@@ -16,7 +16,7 @@ export const fetchFilmsAction = createAsyncThunk<Film[], undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchFilms',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Film[]>(APIRoute.Films);
     return data;
   },
@@ -28,7 +28,7 @@ export const fetchFavoriteFilmsAction = createAsyncThunk<Film[], undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchFavoriteFilms',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Film[]>(APIRoute.Favorite);
     return data;
   },
@@ -40,7 +40,7 @@ export const fetchPromoFilmAction = createAsyncThunk<Film, undefined, {
   extra: AxiosInstance;
 }>(
   'data/fetchPromoFilm',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     const {data} = await api.get<Film>(APIRoute.Promo);
     return data;
   },
@@ -52,7 +52,7 @@ export const fetchFilmByIdAction = createAsyncThunk<Film, string, {
   extra: AxiosInstance;
 }>(
   'data/fetchFilmById',
-  async (filmId, {dispatch, extra: api}) => {
+  async (filmId, {extra: api}) => {
     const {data} = await api.get<Film>(`${APIRoute.Films}${filmId}`);
     return data;
   },
@@ -64,7 +64,7 @@ export const fetchCommentsByIdAction = createAsyncThunk<Reviews, string, {
   extra: AxiosInstance;
 }>(
   'data/fetchCommentsById',
-  async (filmId, {dispatch, extra: api}) => {
+  async (filmId, {extra: api}) => {
     const {data} = await api.get<Reviews>(`${APIRoute.Comments}${filmId}`);
     return data;
   },
@@ -76,7 +76,7 @@ export const fetchSimilarByIdAction = createAsyncThunk<Film[], string, {
   extra: AxiosInstance;
 }>(
   'data/fetchSimilarById',
-  async (filmId, {dispatch, extra: api}) => {
+  async (filmId, {extra: api}) => {
     const {data} = await api.get<Film[]>(`${APIRoute.Films}${filmId}${APIRoute.Similar}`);
     return data;
   },
@@ -88,7 +88,7 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/checkAuth',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     await api.get(APIRoute.Login);
   },
 );
@@ -112,10 +112,9 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   extra: AxiosInstance;
 }>(
   'user/logout',
-  async (_arg, {dispatch, extra: api}) => {
+  async (_arg, {extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
-    //dispatch(fetchFavoriteFilmsAction());
   },
 );
 

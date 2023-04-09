@@ -1,9 +1,12 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import DefaultLoader from '../loader/loader';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { fetchFilmByIdAction, sendFavoriteStatusAction } from '../../store/api-actions';
 import { promoFilmSelector, favoriteFilmsSelector } from '../../store/data/selectors';
+import { AuthorizationStatus } from '../../const';
+import { loadFavoriteFilms } from '../../store/data/data';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function PromoFilm(props: PropsWithChildren): JSX.Element {
   const dispatch = useAppDispatch();
@@ -11,7 +14,13 @@ function PromoFilm(props: PropsWithChildren): JSX.Element {
   const promoFilm = useAppSelector(promoFilmSelector);
   const favoriteFilms = useAppSelector(favoriteFilmsSelector);
   const navigate = useNavigate();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
+  useEffect(() => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(loadFavoriteFilms({favoriteFilms: []}));
+    }
+  }, [authorizationStatus, dispatch]);
 
   if (promoFilm.data === null) {
     return <DefaultLoader/>;

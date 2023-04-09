@@ -1,7 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 import {NameSpace} from '../../const';
 import {Data} from '../../types/state';
-import {fetchCommentsByIdAction, fetchFavoriteFilmsAction, fetchFilmByIdAction, fetchFilmsAction, fetchPromoFilmAction, fetchSimilarByIdAction, sendReviewAction} from '../api-actions';
+import {fetchCommentsByIdAction, fetchFavoriteFilmsAction, fetchFilmByIdAction, fetchFilmsAction,
+  fetchPromoFilmAction, fetchSimilarByIdAction, sendReviewAction} from '../api-actions';
+import { Film } from '../../types/film';
 
 const initialState: Data = {
   filmsList: {
@@ -34,7 +36,16 @@ const initialState: Data = {
 export const data = createSlice({
   name: NameSpace.Data,
   initialState,
-  reducers: {},
+  reducers: {
+    setFilmInfoError: (state, action: PayloadAction<{isError: boolean}>) => {
+      const {isError} = action.payload;
+      state.film.isError = isError;
+    },
+    loadFavoriteFilms: (state, action: PayloadAction<{favoriteFilms: Film[]}>) => {
+      const {favoriteFilms} = action.payload;
+      state.favoriteFilmsList.data = favoriteFilms;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(fetchFilmsAction.pending, (state) => {
@@ -88,3 +99,4 @@ export const data = createSlice({
   }
 });
 
+export const {setFilmInfoError, loadFavoriteFilms} = data.actions;

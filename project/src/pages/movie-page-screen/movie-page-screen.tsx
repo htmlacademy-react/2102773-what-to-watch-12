@@ -11,6 +11,9 @@ import DefaultLoader from '../../components/loader/loader';
 import SimilarFilms from '../../components/similar-films/similar-films';
 import MovieInfo from '../../components/movie-info/movie-info';
 import { movieSelector, reviewsSelector, similarFilmsSelector } from '../../store/data/selectors';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { AuthorizationStatus } from '../../const';
+import { loadFavoriteFilms } from '../../store/data/data';
 
 
 type MoviePageProps = {
@@ -24,6 +27,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
   const movieInfo = useAppSelector(movieSelector);
   const filmReviews = useAppSelector(reviewsSelector);
   const similarFilms = useAppSelector(similarFilmsSelector);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     if (!movieInfo.isError) {
@@ -31,7 +35,10 @@ function MoviePage(props: MoviePageProps): JSX.Element {
       dispatch(fetchCommentsByIdAction(String(params.id)));
       dispatch(fetchSimilarByIdAction(String(params.id)));
     }
-  }, [dispatch, movieInfo.isError, params.id]);
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(loadFavoriteFilms({favoriteFilms: []}));
+    }
+  }, [authorizationStatus, dispatch, movieInfo.isError, params.id]);
 
   const isFavorite = props.favoriteFilms.map((film) => film.id).includes(Number(params.id));
 
