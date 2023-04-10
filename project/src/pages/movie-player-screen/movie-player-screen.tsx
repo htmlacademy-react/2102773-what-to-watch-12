@@ -76,7 +76,7 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
             <progress className="player__progress" value={currentTime} max={durationTime}></progress>
             <div className="player__toggler" style={{left: `${progress}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">{moment(remainingTime * 1000).format('mm:ss')}</div>
+          <div className="player__time-value">{remainingTime < 3600 ? moment(remainingTime * 1000).format('mm:ss') : moment(remainingTime * 1000).format('hh:mm:ss')}</div>
         </div>
 
         <div className="player__controls-row">

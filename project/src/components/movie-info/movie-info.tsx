@@ -46,13 +46,14 @@ function MovieInfo (props: MovieInfoProps): JSX.Element {
               </svg>
               <span>Play</span>
             </button>
-            <button className="btn btn--list film-card__button" type="button" onClick={buttonClickHandler}>
-              <svg viewBox={props.isFavorite ? '0 0 19 19' : '0 0 19 20'} width="19" height={props.isFavorite ? '19' : '20'}>
-                <use xlinkHref={props.isFavorite ? '#in-list' : '#add'}></use>
-              </svg>
-              <span>My list</span>
-              <span className="film-card__count">{props.favoriteFilms.length}</span>
-            </button>
+            {authorizationStatus === AuthorizationStatus.Auth ?
+              <button className="btn btn--list film-card__button" type="button" onClick={buttonClickHandler}>
+                <svg viewBox={props.isFavorite ? '0 0 19 19' : '0 0 19 20'} width="19" height={props.isFavorite ? '19' : '20'}>
+                  <use xlinkHref={props.isFavorite ? '#in-list' : '#add'}></use>
+                </svg>
+                <span>My list</span>
+                <span className="film-card__count">{props.favoriteFilms.length}</span>
+              </button> : null}
             {authorizationStatus === AuthorizationStatus.Auth ?
               <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
               : null}

@@ -3,7 +3,6 @@ import {NameSpace} from '../../const';
 import {Data} from '../../types/state';
 import {fetchCommentsByIdAction, fetchFavoriteFilmsAction, fetchFilmByIdAction, fetchFilmsAction,
   fetchPromoFilmAction, fetchSimilarByIdAction, sendReviewAction} from '../api-actions';
-import { Film } from '../../types/film';
 
 const initialState: Data = {
   filmsList: {
@@ -40,10 +39,6 @@ export const data = createSlice({
     setFilmInfoError: (state, action: PayloadAction<{isError: boolean}>) => {
       const {isError} = action.payload;
       state.film.isError = isError;
-    },
-    loadFavoriteFilms: (state, action: PayloadAction<{favoriteFilms: Film[]}>) => {
-      const {favoriteFilms} = action.payload;
-      state.favoriteFilmsList.data = favoriteFilms;
     },
   },
   extraReducers(builder) {
@@ -99,4 +94,4 @@ export const data = createSlice({
   }
 });
 
-export const {setFilmInfoError, loadFavoriteFilms} = data.actions;
+export const {setFilmInfoError} = data.actions;
