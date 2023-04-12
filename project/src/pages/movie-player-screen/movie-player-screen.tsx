@@ -1,20 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import moment from 'moment';
-import { AppRoute } from '../../const';
-import {Film} from '../../types/film';
+import { AppRoute, SECONDS_IN_HOUR } from '../../const';
 import { useElementListener } from '../../hooks/use-element-listener';
 import LoadingScreen from '../loading-screen/loading-screen';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
+import { format } from 'date-fns';
+import { movieSelector } from '../../store/data/selectors';
 
-type MoviePlayerProps = {
-  film: Film | null;
-}
+const formatRemainingTime = (time: number) => {
+  if (time < SECONDS_IN_HOUR) {
+    return format(time * 1000, 'mm:ss');
+  }
+  else {
+    return format(time * 1000, 'hh:mm:ss');
+  }
+};
 
-function MoviePlayer(props: MoviePlayerProps): JSX.Element {
+function MoviePlayer(): JSX.Element {
+
+  const film = useAppSelector(movieSelector);
   const navigate = useNavigate();
-
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [remainingTime, setRemainingTime] = useState(0);
@@ -30,7 +36,7 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
   const progress = (currentTime / durationTime) * 100;
 
   useEffect(() => {
-    if (props.film === null) {
+    if (film.data === null) {
       dispatch(fetchFilmByIdAction(String(params.id)));
     }
 
@@ -49,9 +55,9 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
 
     videoRef.current.ontimeupdate = () => setRemainingTime(durationTime - currentTime);
 
-  }, [currentTime, dispatch, durationTime, isLoaded, isPlaying, params.id, props.film]);
+  }, [currentTime, dispatch, durationTime, isLoaded, isPlaying, params.id, film]);
 
-  if (props.film === null) {
+  if (film.data === null) {
     return <LoadingScreen/>;
   }
 
@@ -63,12 +69,12 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
 
   return (
     <div className="player">
-      <video src={props.film.videoLink} ref={videoRef}
-        className="player__video" poster={props.film.previewImage}
+      <video src={film.data.videoLink} ref={videoRef}
+        className="player__video" poster={film.data.previewImage}
       >
       </video>
 
-      <button type="button" className="player__exit" onClick={() => navigate(`${AppRoute.Films}${String(props.film?.id)}`)}>Exit</button>
+      <button type="button" className="player__exit" onClick={() => navigate(`${AppRoute.Films}${String(film.data?.id)}`)}>Exit</button>
 
       <div className="player__controls">
         <div className="player__controls-row">
@@ -76,7 +82,7 @@ function MoviePlayer(props: MoviePlayerProps): JSX.Element {
             <progress className="player__progress" value={currentTime} max={durationTime}></progress>
             <div className="player__toggler" style={{left: `${progress}%`}}>Toggler</div>
           </div>
-          <div className="player__time-value">{remainingTime < 3600 ? moment(remainingTime * 1000).format('mm:ss') : moment(remainingTime * 1000).format('hh:mm:ss')}</div>
+          <div className="player__time-value">{formatRemainingTime(remainingTime)}</div>
         </div>
 
         <div className="player__controls-row">

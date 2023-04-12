@@ -11,7 +11,10 @@ import { filterFilms } from '../../selectors/filter';
 import { genreSelector } from '../../store/process/selectors';
 
 type GenresListProps = {
-  films: Film[];
+  films: {
+    data: Film[];
+    isLoading: boolean;
+  };
 }
 
 const createGenresList = (films: Film[]) => {
@@ -33,7 +36,7 @@ function GenresList(props: GenresListProps): JSX.Element {
   const genre = useAppSelector(genreSelector);
   const dispatch = useAppDispatch();
 
-  const filteredFilmsList = filterFilms(props.films, genre);
+  const filteredFilmsList = filterFilms(props.films.data, genre);
 
   const[count, setCount] = useState(0);
   const slicedFilms = sliceFilmsList(filteredFilmsList, count);
@@ -43,7 +46,7 @@ function GenresList(props: GenresListProps): JSX.Element {
   return (
     <>
       <ul className="catalog__genres-list">
-        {createGenresList(props.films).map((filmsGenre) => (
+        {createGenresList(props.films.data).map((filmsGenre) => (
           <li className={cn('catalog__genres-item', { 'catalog__genres-item--active': genre === filmsGenre })} key={filmsGenre}>
             <Link to='' className="catalog__genres-link" onClick={() => {
               dispatch(setGenre({ genre: filmsGenre }));

@@ -20,7 +20,7 @@ function SignIn(): JSX.Element {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (authData !== null) {
+    if (authData.password !== '') {
       dispatch(loginAction({
         login: authData.login,
         password: authData.password,

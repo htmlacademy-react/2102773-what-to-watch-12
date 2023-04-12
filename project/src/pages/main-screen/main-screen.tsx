@@ -1,21 +1,18 @@
 import {Helmet} from 'react-helmet-async';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import {Film} from '../../types/film';
 import GenresList from '../../components/genres-list/genres-list';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import PromoFilm from '../../components/promo-film/promo-film';
-import { movieSelector } from '../../store/data/selectors';
+import { filmsSelector, movieSelector } from '../../store/data/selectors';
 import { setFilmInfoError } from '../../store/data/data';
+import LoadingScreen from '../loading-screen/loading-screen';
 
-type MainScreenProps = {
-  films: Film[];
-}
-
-function MainScreen(props: MainScreenProps): JSX.Element {
+function MainScreen(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const filmsList = useAppSelector(filmsSelector);
   const movieInfo = useAppSelector(movieSelector);
 
   useEffect(() => {
@@ -23,6 +20,12 @@ function MainScreen(props: MainScreenProps): JSX.Element {
       dispatch(setFilmInfoError({isError: false}));
     }
   }, [dispatch, movieInfo.isError]);
+
+  if (filmsList.isLoading) {
+    return (
+      <LoadingScreen/>
+    );
+  }
 
   return (
     <>
@@ -33,7 +36,7 @@ function MainScreen(props: MainScreenProps): JSX.Element {
       <div className="page-content">
         <section className="catalog">
           <h2 className="catalog__title visually-hidden">Catalog</h2>
-          <GenresList films={props.films}/>
+          <GenresList films={filmsList}/>
         </section>
         <Footer/>
       </div>

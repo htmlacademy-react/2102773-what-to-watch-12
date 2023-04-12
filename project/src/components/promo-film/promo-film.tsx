@@ -15,7 +15,7 @@ function PromoFilm(props: PropsWithChildren): JSX.Element {
   const navigate = useNavigate();
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
-  if (promoFilm.data === null) {
+  if (!promoFilm.data) {
     return <DefaultLoader/>;
   }
 

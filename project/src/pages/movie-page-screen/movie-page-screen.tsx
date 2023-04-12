@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import {Film} from '../../types/film';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import FilmTabs from '../../components/film-tabs/film-tabs';
@@ -11,13 +10,9 @@ import DefaultLoader from '../../components/loader/loader';
 import SimilarFilms from '../../components/similar-films/similar-films';
 import MovieInfo from '../../components/movie-info/movie-info';
 import { movieSelector, reviewsSelector, similarFilmsSelector } from '../../store/data/selectors';
+import PageNotFound from '../../components/page-not-found/page-not-found';
 
-
-type MoviePageProps = {
-  favoriteFilms: Film[];
-}
-
-function MoviePage(props: MoviePageProps): JSX.Element {
+function MoviePage(): JSX.Element {
 
   const params = useParams();
   const dispatch = useAppDispatch();
@@ -33,7 +28,9 @@ function MoviePage(props: MoviePageProps): JSX.Element {
     }
   }, [dispatch, movieInfo.isError, params.id]);
 
-  const isFavorite = props.favoriteFilms.map((film) => film.id).includes(Number(params.id));
+  if (movieInfo.isError) {
+    return <PageNotFound/>;
+  }
 
   if (movieInfo.data === null) {
     return <LoadingScreen/>;
@@ -43,7 +40,7 @@ function MoviePage(props: MoviePageProps): JSX.Element {
     <>
       <section className="film-card film-card--full">
 
-        <MovieInfo favoriteFilms={props.favoriteFilms} movieInfo={movieInfo.data} isFavorite={isFavorite}>
+        <MovieInfo movieInfo={movieInfo.data}>
           <Header/>
         </MovieInfo>
 
