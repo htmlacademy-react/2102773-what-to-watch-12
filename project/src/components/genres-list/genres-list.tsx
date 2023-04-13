@@ -1,16 +1,20 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {setGenre} from '../../store/action';
+import {setGenre} from '../../store/process/process';
 import { Film } from '../../types/film';
 import cn from 'classnames';
 import { DEFAULT_FILTER, MOVIE_CARDS_COUNT } from '../../const';
 import FilmsList from '../movies-list/films-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
 import { filterFilms } from '../../selectors/filter';
+import { genreSelector } from '../../store/process/selectors';
 
 type GenresListProps = {
-  films: Film[];
+  films: {
+    data: Film[];
+    isLoading: boolean;
+  };
 }
 
 const createGenresList = (films: Film[]) => {
@@ -29,10 +33,10 @@ const sliceFilmsList = (filmsList: Film[], count: number) => {
 };
 
 function GenresList(props: GenresListProps): JSX.Element {
-  const genre = useAppSelector((state) => state.genre);
+  const genre = useAppSelector(genreSelector);
   const dispatch = useAppDispatch();
 
-  const filteredFilmsList = filterFilms(props.films, genre);
+  const filteredFilmsList = filterFilms(props.films.data, genre);
 
   const[count, setCount] = useState(0);
   const slicedFilms = sliceFilmsList(filteredFilmsList, count);
@@ -42,7 +46,7 @@ function GenresList(props: GenresListProps): JSX.Element {
   return (
     <>
       <ul className="catalog__genres-list">
-        {createGenresList(props.films).map((filmsGenre) => (
+        {createGenresList(props.films.data).map((filmsGenre) => (
           <li className={cn('catalog__genres-item', { 'catalog__genres-item--active': genre === filmsGenre })} key={filmsGenre}>
             <Link to='' className="catalog__genres-link" onClick={() => {
               dispatch(setGenre({ genre: filmsGenre }));

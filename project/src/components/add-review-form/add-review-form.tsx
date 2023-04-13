@@ -2,8 +2,8 @@ import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendReviewAction } from '../../store/api-actions';
 import { ReviewLength } from '../../const';
-import { reviewsSelector } from '../../store/selectors';
 import DefaultLoader from '../loader/loader';
+import { reviewsSelector } from '../../store/data/selectors';
 
 type AddReviewFormProps = {
   filmId: string;

@@ -7,9 +7,9 @@ import {AppRoute} from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
 import { useEffect } from 'react';
-import { movieSelector } from '../../store/selectors';
 import PageNotFound from '../../components/page-not-found/page-not-found';
 import LoadingScreen from '../loading-screen/loading-screen';
+import { movieSelector } from '../../store/data/selectors';
 
 function AddReview(): JSX.Element {
 

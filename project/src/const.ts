@@ -2,10 +2,10 @@ export enum AppRoute {
   SignIn = '/login',
   MyList = '/mylist',
   Films = '/films/',
-  Film = ':id',
+  FilmId = ':id',
   Main = '/',
   AddReview = 'review',
-  Player = '/player/:id'
+  Player = '/player/'
 }
 
 export enum AuthorizationStatus {
@@ -24,11 +24,12 @@ export const SIMILAR_FILMS_COUNT = 5;
 export const DELAY = 1000;
 export const DEFAULT_FILTER = 'All genres';
 export const MOVIE_CARDS_COUNT = 8;
+export const SECONDS_IN_HOUR = 3600;
 
 export enum APIRoute {
   Films = '/films/',
   Promo = '/promo',
-  Favorite = '/favorite',
+  Favorite = '/favorite/',
   Comments = '/comments/',
   Login = '/login',
   Logout = '/logout',
@@ -41,3 +42,9 @@ export enum ReviewLength {
 }
 
 export const REDIRECT_ACTION_NAME = 'main/redirectToRoute';
+
+export enum NameSpace {
+  Data = 'DATA',
+  Main = 'MAIN',
+  User = 'USER',
+}
