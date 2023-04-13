@@ -4,7 +4,7 @@ import {useAppDispatch, useAppSelector} from '../../hooks';
 import {setGenre} from '../../store/process/process';
 import { Film } from '../../types/film';
 import cn from 'classnames';
-import { DEFAULT_FILTER, MOVIE_CARDS_COUNT } from '../../const';
+import { DEFAULT_FILTER, MAX_GANRE_COUNT, MOVIE_CARDS_COUNT } from '../../const';
 import FilmsList from '../movies-list/films-list';
 import ShowMoreButton from '../show-more-button/show-more-button';
 import { filterFilms } from '../../selectors/filter';
@@ -21,7 +21,7 @@ const createGenresList = (films: Film[]) => {
   const filmsGenres = films.map((film) => film.genre);
   filmsGenres.unshift(DEFAULT_FILTER);
   const uniqGenres = new Set(filmsGenres);
-  return [...uniqGenres];
+  return [...uniqGenres].slice(0, MAX_GANRE_COUNT);
 };
 
 const sliceFilmsList = (filmsList: Film[], count: number) => {

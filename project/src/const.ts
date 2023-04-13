@@ -25,6 +25,7 @@ export const DELAY = 1000;
 export const DEFAULT_FILTER = 'All genres';
 export const MOVIE_CARDS_COUNT = 8;
 export const SECONDS_IN_HOUR = 3600;
+export const MAX_GANRE_COUNT = 10;
 
 export enum APIRoute {
   Films = '/films/',
