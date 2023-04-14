@@ -3,9 +3,10 @@ import { AuthorizationStatus, AppRoute } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { sendFavoriteStatusAction } from '../../store/api-actions';
 import { Film } from '../../types/film';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { favoriteFilmsSelector } from '../../store/data/selectors';
+import { loadFavoriteFilms } from '../../store/data/data';
 
 type MovieInfoProps = PropsWithChildren<{
   movieInfo: Film;
@@ -18,6 +19,12 @@ function MovieInfo (props: MovieInfoProps): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const favoriteFilms = useAppSelector(favoriteFilmsSelector);
   const isFavorite = favoriteFilms.data.map((film) => film.id).includes(Number(params.id));
+
+  useEffect(() => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      dispatch(loadFavoriteFilms({favoriteFilms: []}));
+    }
+  }, [authorizationStatus, dispatch]);
 
   const buttonClickHandler = () => {
     dispatch(sendFavoriteStatusAction({
@@ -48,14 +55,13 @@ function MovieInfo (props: MovieInfoProps): JSX.Element {
               </svg>
               <span>Play</span>
             </button>
-            {authorizationStatus === AuthorizationStatus.Auth ?
-              <button className="btn btn--list film-card__button" type="button" onClick={buttonClickHandler}>
-                <svg viewBox={isFavorite ? '0 0 19 19' : '0 0 19 20'} width="19" height={isFavorite ? '19' : '20'}>
-                  <use xlinkHref={isFavorite ? '#in-list' : '#add'}></use>
-                </svg>
-                <span>My list</span>
-                <span className="film-card__count">{favoriteFilms.data.length}</span>
-              </button> : null}
+            <button className="btn btn--list film-card__button" type="button" onClick={buttonClickHandler}>
+              <svg viewBox={isFavorite ? '0 0 19 19' : '0 0 19 20'} width="19" height={isFavorite ? '19' : '20'}>
+                <use xlinkHref={isFavorite ? '#in-list' : '#add'}></use>
+              </svg>
+              <span>My list</span>
+              <span className="film-card__count">{favoriteFilms.data.length}</span>
+            </button>
             {authorizationStatus === AuthorizationStatus.Auth ?
               <Link to={`${AppRoute.AddReview}`} className="btn film-card__button">Add review</Link>
               : null}

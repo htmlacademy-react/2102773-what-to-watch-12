@@ -5,6 +5,7 @@ import { Reviews } from './review.js';
 
 export type UserProcess = {
   authorizationStatus: AuthorizationStatus;
+  loginError: boolean;
 };
 
 export type Data = {

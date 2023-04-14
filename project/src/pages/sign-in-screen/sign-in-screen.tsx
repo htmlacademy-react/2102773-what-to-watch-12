@@ -1,13 +1,27 @@
-import { FormEvent, useState, ChangeEvent } from 'react';
+import { FormEvent, useState, ChangeEvent, useEffect } from 'react';
 import {Helmet} from 'react-helmet-async';
 import Footer from '../../components/footer/footer';
 import Logo from '../../components/logo/logo';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
+import { useNavigate } from 'react-router-dom';
+import { AuthorizationStatus, AppRoute } from '../../const';
+import { getAuthorizationStatus, getLoginError } from '../../store/user-process/selectors';
+import cn from 'classnames';
+import { setLoginError } from '../../store/user-process/user-process';
 
 function SignIn(): JSX.Element {
 
   const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
+  const loginError = useAppSelector(getLoginError);
+  const redirect = useNavigate();
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      redirect(AppRoute.Main);
+    }
+  }, [authorizationStatus, redirect]);
 
   const [authData, setAuthData] = useState({
     login: '',
@@ -18,13 +32,22 @@ function SignIn(): JSX.Element {
     setAuthData({...authData, [target.name]: target.value});
   };
 
+  const validPassword = /[0-9][A-Za-z]/;
+
+  const [isValidError, setValidError] = useState(false);
+
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    if (authData.password !== '') {
+    if (validPassword.test(authData.password)) {
+      setValidError(false);
       dispatch(loginAction({
         login: authData.login,
         password: authData.password,
       }));
+      dispatch(setLoginError({isError: false}));
+    }
+    else {
+      setValidError(true);
     }
   };
 
@@ -41,8 +64,16 @@ function SignIn(): JSX.Element {
 
       <div className="sign-in user-page__content">
         <form action="#" className="sign-in__form" onSubmit={handleSubmit}>
+          {isValidError &&
+          <div className="sign-in__message">
+            <p>Please enter a valid password</p>
+          </div>}
+          {loginError &&
+          <div className="sign-in__message">
+            <p>Please enter a valid email address</p>
+          </div>}
           <div className="sign-in__fields">
-            <div className="sign-in__field">
+            <div className={cn('sign-in__field', {'sign-in__field--error' : loginError})}>
               <input
                 className="sign-in__input"
                 type="email" placeholder="Email address"
@@ -51,7 +82,7 @@ function SignIn(): JSX.Element {
               />
               <label className="sign-in__label visually-hidden" htmlFor="user-email">Email address</label>
             </div>
-            <div className="sign-in__field">
+            <div className={cn('sign-in__field', {'sign-in__field--error' : isValidError})}>
               <input
                 className="sign-in__input"
                 type="password" placeholder="Password"
