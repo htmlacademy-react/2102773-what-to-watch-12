@@ -32,7 +32,7 @@ function SignIn(): JSX.Element {
     setAuthData({...authData, [target.name]: target.value});
   };
 
-  const validPassword = /[0-9][A-Za-z]/;
+  const validPassword = /^(?=.*\d)(?=.*[A-Za-z])(?!.*\s).*$/;
 
   const [isValidError, setValidError] = useState(false);
 
