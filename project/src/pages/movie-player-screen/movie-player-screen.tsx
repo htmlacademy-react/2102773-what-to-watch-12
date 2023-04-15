@@ -79,7 +79,7 @@ function MoviePlayer(): JSX.Element {
       <div className="player__controls">
         <div className="player__controls-row">
           <div className="player__time">
-            <progress className="player__progress" value={currentTime} max={durationTime}></progress>
+            <progress className="player__progress" value={currentTime} max={!Number.isNaN(durationTime) ? durationTime : 0}></progress>
             <div className="player__toggler" style={{left: `${progress}%`}}>Toggler</div>
           </div>
           <div className="player__time-value">{formatRemainingTime(remainingTime)}</div>
