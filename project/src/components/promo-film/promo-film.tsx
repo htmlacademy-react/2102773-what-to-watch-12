@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useNavigate } from 'react-router-dom';
 import { fetchFilmByIdAction, sendFavoriteStatusAction } from '../../store/api-actions';
 import { promoFilmSelector, favoriteFilmsSelector } from '../../store/data/selectors';
-import { AuthorizationStatus } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { loadFavoriteFilms } from '../../store/data/data';
 
@@ -20,7 +20,8 @@ function PromoFilm(props: PropsWithChildren): JSX.Element {
     if (authorizationStatus !== AuthorizationStatus.Auth) {
       dispatch(loadFavoriteFilms({favoriteFilms: []}));
     }
-  }, [authorizationStatus, dispatch]);
+
+  }, [authorizationStatus, dispatch, navigate]);
 
   if (!promoFilm.data) {
     return <DefaultLoader/>;
@@ -29,6 +30,9 @@ function PromoFilm(props: PropsWithChildren): JSX.Element {
   const isFavorite = favoriteFilms.data.map((film) => film.id).includes(Number(promoFilm.data.id));
 
   const buttonClickHandler = () => {
+    if(authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.SignIn);
+    }
     dispatch(sendFavoriteStatusAction({
       status: Number(!isFavorite),
       filmId: String(promoFilm.data?.id)
@@ -59,7 +63,7 @@ function PromoFilm(props: PropsWithChildren): JSX.Element {
 
             <div className="film-card__buttons">
               <button className="btn btn--play film-card__button" type="button"
-                onClick={() => {dispatch(fetchFilmByIdAction(String(promoFilm.data?.id))); navigate(`/player/${String(promoFilm.data?.id)}`);}}
+                onClick={() => {dispatch(fetchFilmByIdAction(String(promoFilm.data?.id))); navigate(`${AppRoute.Player}${String(promoFilm.data?.id)}`);}}
               >
                 <svg viewBox="0 0 19 19" width="19" height="19">
                   <use xlinkHref="#play-s"></use>

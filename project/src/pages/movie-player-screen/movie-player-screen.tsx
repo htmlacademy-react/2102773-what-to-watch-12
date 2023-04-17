@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchFilmByIdAction } from '../../store/api-actions';
 import { format } from 'date-fns';
 import { movieSelector } from '../../store/data/selectors';
+import PageNotFound from '../../components/page-not-found/page-not-found';
 
 const formatRemainingTime = (time: number) => {
   if (time < SECONDS_IN_HOUR) {
@@ -29,14 +30,18 @@ function MoviePlayer(): JSX.Element {
   const dispatch = useAppDispatch();
   const params = useParams();
 
-  useElementListener('loadeddata', videoRef, () => setIsLoaded(true));
+  useElementListener('loadeddata' && 'loadedmetadata', videoRef, () => setIsLoaded(true));
 
-  const currentTime = videoRef.current?.currentTime as number;
-  const durationTime = videoRef.current?.duration as number;
+  let currentTime: number;
+  let durationTime: number;
+
+  isLoaded && videoRef.current ? currentTime = videoRef.current.currentTime : currentTime = 0;
+  isLoaded && videoRef.current && !Number.isNaN(videoRef.current.duration) ? durationTime = videoRef.current.duration : durationTime = 0;
+
   const progress = (currentTime / durationTime) * 100;
 
   useEffect(() => {
-    if (film.data === null) {
+    if (film.data === null && !film.isError) {
       dispatch(fetchFilmByIdAction(String(params.id)));
     }
 
@@ -57,6 +62,10 @@ function MoviePlayer(): JSX.Element {
 
   }, [currentTime, dispatch, durationTime, isLoaded, isPlaying, params.id, film]);
 
+  if (film.isError) {
+    return <PageNotFound/>;
+  }
+
   if (film.data === null) {
     return <LoadingScreen/>;
   }
@@ -69,8 +78,8 @@ function MoviePlayer(): JSX.Element {
 
   return (
     <div className="player">
-      <video src={film.data.videoLink} ref={videoRef}
-        className="player__video" poster={film.data.previewImage}
+      <video src={film.data.videoLink} ref={videoRef} preload="metadata"
+        className="player__video"
       >
       </video>
 

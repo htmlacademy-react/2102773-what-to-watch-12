@@ -1,9 +1,10 @@
 import {PayloadAction, createSlice} from '@reduxjs/toolkit';
-import {NameSpace} from '../../const';
+import {NameSpace, TOAST_MESSAGES} from '../../const';
 import {Data} from '../../types/state';
 import {fetchCommentsByIdAction, fetchFavoriteFilmsAction, fetchFilmByIdAction, fetchFilmsAction,
   fetchPromoFilmAction, fetchSimilarByIdAction, sendReviewAction} from '../api-actions';
 import { Film } from '../../types/film';
+import { toast } from 'react-toastify';
 
 const initialState: Data = {
   filmsList: {
@@ -95,6 +96,10 @@ export const data = createSlice({
       })
       .addCase(sendReviewAction.fulfilled, (state, action) => {
         state.comments.isSending = false;
+        toast.info(TOAST_MESSAGES.Success);
+      })
+      .addCase(sendReviewAction.rejected, () => {
+        toast.error(TOAST_MESSAGES.Error);
       });
   }
 });
