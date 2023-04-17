@@ -27,6 +27,9 @@ function MovieInfo (props: MovieInfoProps): JSX.Element {
   }, [authorizationStatus, dispatch]);
 
   const buttonClickHandler = () => {
+    if(authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate(AppRoute.SignIn);
+    }
     dispatch(sendFavoriteStatusAction({
       status: Number(!isFavorite),
       filmId: String(props.movieInfo.id)

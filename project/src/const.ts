@@ -49,3 +49,8 @@ export enum NameSpace {
   Main = 'MAIN',
   User = 'USER',
 }
+
+export enum TOAST_MESSAGES {
+  Error = 'Сообщение не отправлено',
+  Success = 'Сообщение отправлено'
+}
